@@ -233,7 +233,7 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
   return (
     <div 
         ref={containerRef}
-        className="relative isolate w-full h-full flex items-center justify-center overflow-hidden"
+        className="relative isolate w-full mt-6 h-full flex items-center justify-center overflow-hidden"
         onMouseMove={handleMouseMove}
     >
       <AnimatePresence>

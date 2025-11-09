@@ -20,6 +20,9 @@ body {
     font-family: jost-regular, sans-serif;
     background: #fff9e3c6;
 }
+*{
+    user-select: none;
+}
 @font-face {
     font-family: inter-bold;
     src: url(../public/fonts/Inter/Inter_24pt-Bold.ttf);

@@ -1,12 +1,11 @@
 import React from 'react'
-import Home_cards from '../components/home/Home_cards'
 
-function Home() {
+function SavedJobs() {
     return (
         <div className='w-full p-3 h-full overflow-hidden'> 
-            <Home_cards />
+            Saved Jobs Page
         </div>
     )
 }
 
-export default Home
+export default SavedJobs
