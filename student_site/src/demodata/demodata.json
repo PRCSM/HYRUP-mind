@@ -1,0 +1,392 @@
+{
+  "companyJobs": [
+    {
+      "title": "Senior Full Stack Developer",
+      "description": "We are seeking an experienced Full Stack Developer to join our engineering team. You'll work on building scalable web applications using modern technologies.",
+      "rolesAndResponsibilities": "Design and develop full-stack web applications using React and Node.js. Collaborate with cross-functional teams to define and ship new features. Write clean, maintainable, and well-documented code. Participate in code reviews and mentor junior developers. Optimize applications for maximum speed and scalability. Troubleshoot and debug production issues.",
+      "perks": "Competitive salary with performance bonuses. Health, dental, and vision insurance. 401(k) matching. Flexible work hours and remote work options. Professional development budget. Modern tech stack and latest tools. Collaborative team environment.",
+      "aboutJob": "This role offers the opportunity to work on cutting-edge web applications that serve thousands of users daily. You'll be part of a dynamic engineering team that values innovation, code quality, and continuous learning. The position involves working with modern JavaScript frameworks and cloud technologies.",
+      "aboutCompany": "TechVision Inc. is a fast-growing SaaS company founded in 2018, specializing in enterprise productivity solutions. With over 500 employees and offices in San Francisco and Austin, we're backed by leading venture capital firms and serve Fortune 500 clients globally. Our mission is to transform how teams collaborate and work together.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 3,
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd799439011",
+      "salaryRange": {
+        "min": 80000,
+        "max": 120000
+      },
+      "preferences": {
+        "skills": ["React", "Node.js", "MongoDB", "TypeScript", "AWS"],
+        "minExperience": 3,
+        "education": "Bachelor's in Computer Science or related field",
+        "location": "San Francisco, CA"
+      }
+    },
+    {
+      "title": "Data Scientist",
+      "description": "Join our data science team to develop machine learning models and derive insights from complex datasets. Work with cutting-edge AI technologies.",
+      "rolesAndResponsibilities": "Build and deploy machine learning models for predictive analytics. Analyze large datasets to extract actionable insights. Collaborate with product teams to identify data-driven opportunities. Develop data pipelines and automation workflows. Present findings to stakeholders and leadership. Stay current with latest ML/AI research and techniques.",
+      "perks": "Competitive compensation package. Comprehensive health benefits. Access to GPU clusters and cloud computing resources. Conference and training allowances. Stock options. Flexible schedule. Collaborative research environment.",
+      "aboutJob": "As a Data Scientist, you'll tackle complex analytical challenges using machine learning and statistical methods. This position combines research with practical application, allowing you to see your models impact business decisions. You'll work with petabytes of data and state-of-the-art ML infrastructure.",
+      "aboutCompany": "DataMinds Analytics is a leading data science consultancy founded in 2016, helping enterprises leverage AI and analytics. With 200+ data scientists across New York, Boston, and London, we've completed over 1,000 successful projects. We're known for our innovative approach to solving business problems with data.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 2,
+      "mode": "remote",
+      "recruiter": "507f1f77bcf86cd799439013",
+      "salaryRange": {
+        "min": 95000,
+        "max": 140000
+      },
+      "preferences": {
+        "skills": ["Python", "TensorFlow", "PyTorch", "SQL", "Statistics"],
+        "minExperience": 2,
+        "education": "Master's in Data Science, Statistics, or Computer Science",
+        "location": "New York, NY"
+      }
+    },
+    {
+      "title": "Product Manager",
+      "description": "Lead product strategy and execution for our flagship SaaS platform. Collaborate with cross-functional teams to deliver exceptional user experiences.",
+      "rolesAndResponsibilities": "Define product vision and roadmap aligned with business goals. Conduct user research and gather customer feedback. Prioritize features and manage product backlog. Work closely with engineering, design, and marketing teams. Define success metrics and track product performance. Lead product launches and go-to-market strategies.",
+      "perks": "Excellent salary and equity package. Comprehensive benefits including health, dental, vision. Unlimited PTO. Learning and development budget. Modern office with free meals. Remote work flexibility. Team offsites and events.",
+      "aboutJob": "This Product Manager role offers the chance to shape products used by millions. You'll own the product roadmap and work cross-functionally to bring innovative features to life. The role requires strategic thinking, user empathy, and the ability to balance competing priorities while driving measurable impact.",
+      "aboutCompany": "CloudSync Solutions is a B2B SaaS leader in workflow automation, founded in 2015. Headquartered in Austin with 800+ employees, we serve over 10,000 companies worldwide. Our platform processes 50 million tasks monthly and has raised $150M in funding from top-tier investors.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 1,
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd799439015",
+      "salaryRange": {
+        "min": 100000,
+        "max": 150000
+      },
+      "preferences": {
+        "skills": ["Product Strategy", "Agile", "User Research", "Analytics", "Roadmap Planning"],
+        "minExperience": 4,
+        "education": "Bachelor's degree in Business, Computer Science, or related field",
+        "location": "Austin, TX"
+      }
+    },
+    {
+      "title": "DevOps Engineer",
+      "description": "Seeking a DevOps Engineer to manage our cloud infrastructure, implement CI/CD pipelines, and ensure system reliability and scalability.",
+      "rolesAndResponsibilities": "Design and maintain cloud infrastructure on AWS. Implement and optimize CI/CD pipelines. Monitor system performance and troubleshoot issues. Automate deployment and infrastructure provisioning. Ensure security best practices and compliance. Collaborate with development teams on infrastructure needs.",
+      "perks": "Competitive salary with annual bonuses. Full health benefits package. 401(k) with company match. Remote-first culture. Home office stipend. Professional certifications paid. Cutting-edge tools and technologies.",
+      "aboutJob": "Join our DevOps team managing infrastructure that powers millions of transactions daily. You'll work with Kubernetes, Docker, and modern cloud technologies while implementing best practices for reliability and security. This role offers autonomy and the opportunity to architect scalable solutions.",
+      "aboutCompany": "ScaleUp Technologies is a cloud infrastructure company founded in 2017, providing managed services to startups and enterprises. With 300 engineers across Seattle and remote locations, we manage infrastructure for 500+ clients. We're profitable, growing 100% YoY, and known for engineering excellence.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 2,
+      "mode": "remote",
+      "recruiter": "507f1f77bcf86cd799439017",
+      "salaryRange": {
+        "min": 85000,
+        "max": 125000
+      },
+      "preferences": {
+        "skills": ["Docker", "Kubernetes", "Jenkins", "AWS", "Terraform", "Linux"],
+        "minExperience": 3,
+        "education": "Bachelor's in Computer Science or equivalent experience",
+        "location": "Seattle, WA"
+      }
+    },
+    {
+      "title": "UX/UI Designer",
+      "description": "Create beautiful and intuitive user interfaces for our mobile and web applications. Work closely with product and engineering teams.",
+      "rolesAndResponsibilities": "Design user interfaces for web and mobile applications. Create wireframes, prototypes, and high-fidelity mockups. Conduct user research and usability testing. Collaborate with developers to ensure design implementation. Maintain and evolve design systems. Present design concepts to stakeholders.",
+      "perks": "Competitive compensation. Health, dental, and vision insurance. Latest design tools and software. Flexible work arrangements. Creative and collaborative environment. Portfolio development opportunities. Design conferences and workshops.",
+      "aboutJob": "Shape the visual identity and user experience of products used by millions. You'll work on everything from mobile apps to web platforms, conducting user research and creating intuitive designs. This role offers creative freedom while solving real user problems through thoughtful design.",
+      "aboutCompany": "DesignFirst Labs is a digital product studio founded in 2019, creating award-winning apps and websites. Based in Los Angeles with 150 team members, we've designed products for Fortune 500 companies and innovative startups. We're certified as a Great Place to Work and prioritize design excellence.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 2,
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd799439019",
+      "salaryRange": {
+        "min": 70000,
+        "max": 105000
+      },
+      "preferences": {
+        "skills": ["Figma", "Adobe XD", "User Research", "Prototyping", "HTML/CSS"],
+        "minExperience": 2,
+        "education": "Bachelor's in Design, HCI, or related field",
+        "location": "Los Angeles, CA"
+      }
+    },
+    {
+      "title": "Mobile App Developer (iOS)",
+      "description": "Develop and maintain our iOS applications using Swift and SwiftUI. Focus on performance optimization and user experience.",
+      "rolesAndResponsibilities": "Develop new features for iOS applications using Swift and SwiftUI. Maintain and improve existing codebase. Integrate with RESTful APIs and backend services. Optimize app performance and memory usage. Write unit and integration tests. Collaborate with designers and product managers. Stay updated with iOS development best practices.",
+      "perks": "Excellent salary package. Comprehensive health benefits. Latest Apple devices for development. Flexible working hours. Remote work options. Learning and development budget. Attend WWDC and other conferences.",
+      "aboutJob": "Build features for our top-rated iOS apps downloaded by millions of users. You'll work with the latest iOS technologies including SwiftUI and Combine, pushing the boundaries of what's possible on mobile. This role offers the chance to create delightful user experiences and solve challenging technical problems.",
+      "aboutCompany": "MobileFirst Apps is a mobile-focused company founded in 2014, creating consumer and enterprise iOS applications. Based in Boston with 250 employees, our apps have been featured by Apple and have won multiple design awards. We're backed by Series B funding and growing rapidly.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 2,
+      "mode": "on-site",
+      "recruiter": "507f1f77bcf86cd79943901b",
+      "salaryRange": {
+        "min": 90000,
+        "max": 130000
+      },
+      "preferences": {
+        "skills": ["Swift", "SwiftUI", "iOS SDK", "Core Data", "RESTful APIs"],
+        "minExperience": 3,
+        "education": "Bachelor's in Computer Science or related field",
+        "location": "Boston, MA"
+      }
+    },
+    {
+      "title": "Cybersecurity Analyst",
+      "description": "Protect our systems and data from security threats. Monitor networks, perform vulnerability assessments, and respond to incidents.",
+      "rolesAndResponsibilities": "Monitor network traffic for security threats and anomalies. Conduct vulnerability assessments and penetration testing. Respond to security incidents and breaches. Implement security policies and procedures. Maintain security tools and systems. Provide security awareness training to employees. Stay current with latest security threats and trends.",
+      "perks": "Competitive salary. Full health benefits. Security certifications paid. Home office setup for remote work. Professional development opportunities. Work with latest security tools. Participate in bug bounty programs.",
+      "aboutJob": "Play a critical role in protecting infrastructure and data from cyber threats. You'll use cutting-edge security tools, conduct penetration testing, and respond to incidents. This position offers continuous learning opportunities as you stay ahead of evolving threats and work on challenging security problems.",
+      "aboutCompany": "SecureShield Corp is a cybersecurity firm founded in 2013, providing managed security services to government and enterprise clients. Headquartered in Washington DC with 400 security professionals, we protect critical infrastructure and hold multiple security certifications. We're a leader in threat intelligence and incident response.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 1,
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd79943901d",
+      "salaryRange": {
+        "min": 75000,
+        "max": 115000
+      },
+      "preferences": {
+        "skills": ["Network Security", "SIEM", "Penetration Testing", "Firewalls", "Incident Response"],
+        "minExperience": 2,
+        "education": "Bachelor's in Cybersecurity, Information Technology, or related field",
+        "location": "Washington, DC"
+      }
+    },
+    {
+      "title": "Marketing Manager",
+      "description": "Lead marketing campaigns and strategies to drive user acquisition and brand awareness. Manage a team of marketing specialists.",
+      "rolesAndResponsibilities": "Develop and execute marketing strategies across multiple channels. Manage marketing budget and ROI tracking. Lead a team of marketing specialists. Create content strategies for digital and social media. Analyze campaign performance and optimize strategies. Coordinate with sales and product teams. Manage relationships with external agencies and vendors.",
+      "perks": "Excellent compensation package. Health, dental, vision insurance. Performance-based bonuses. Flexible work schedule. Marketing tools and software provided. Professional development budget. Team building activities and events.",
+      "aboutJob": "Lead comprehensive marketing initiatives for a fast-growing company. You'll develop strategies across digital, content, and social media while managing a talented team. This role offers the opportunity to build marketing programs from the ground up and directly impact company growth with measurable results.",
+      "aboutCompany": "GrowthWave Marketing is a B2B marketing agency founded in 2017, helping SaaS companies scale their marketing efforts. Based in Chicago with 120 employees, we've helped over 200 companies achieve 10x growth. We're known for data-driven marketing strategies and creative campaigns that deliver results.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 1,
+      "mode": "on-site",
+      "recruiter": "507f1f77bcf86cd79943901f",
+      "salaryRange": {
+        "min": 80000,
+        "max": 120000
+      },
+      "preferences": {
+        "skills": ["Digital Marketing", "SEO", "Content Strategy", "Analytics", "Team Management"],
+        "minExperience": 5,
+        "education": "Bachelor's in Marketing, Business, or related field",
+        "location": "Chicago, IL"
+      }
+    },
+    {
+      "title": "Backend Engineer",
+      "description": "Build and maintain scalable backend services and APIs. Work with microservices architecture and distributed systems.",
+      "rolesAndResponsibilities": "Design and develop RESTful APIs and microservices. Build scalable backend systems handling high traffic. Optimize database queries and system performance. Implement security best practices. Write comprehensive tests and documentation. Participate in architecture decisions. On-call rotation for production support.",
+      "perks": "Competitive salary and equity. Comprehensive health benefits. Latest development tools and equipment. Flexible hours and remote work. Learning budget for courses and books. Conference attendance. Modern tech stack.",
+      "aboutJob": "Work on backend systems that power applications serving millions of users daily. You'll design and build microservices using modern technologies, solve distributed systems challenges, and ensure high availability. This role offers deep technical challenges and the opportunity to architect scalable solutions.",
+      "aboutCompany": "APIFirst Technologies is a platform company founded in 2016, providing backend infrastructure and APIs to developers. Based in Denver with 350 engineers, we process over 1 billion API requests daily. We're Series C funded, profitable, and known for our engineering culture and technical excellence.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 3,
+      "mode": "remote",
+      "recruiter": "507f1f77bcf86cd799439021",
+      "salaryRange": {
+        "min": 85000,
+        "max": 125000
+      },
+      "preferences": {
+        "skills": ["Java", "Spring Boot", "PostgreSQL", "Redis", "Microservices"],
+        "minExperience": 3,
+        "education": "Bachelor's in Computer Science or related field",
+        "location": "Denver, CO"
+      }
+    },
+    {
+      "title": "Business Analyst",
+      "description": "Analyze business processes and requirements to bridge the gap between stakeholders and technical teams. Drive data-driven decisions.",
+      "rolesAndResponsibilities": "Gather and document business requirements. Analyze business processes and identify improvement opportunities. Create detailed functional specifications. Work with stakeholders across departments. Perform data analysis to support business decisions. Create reports and dashboards. Facilitate meetings and workshops.",
+      "perks": "Competitive salary. Health and wellness benefits. 401(k) matching. Professional certification support. Flexible work environment. Modern office space. Career growth opportunities. Collaborative culture.",
+      "aboutJob": "Bridge the gap between business and technology by analyzing processes and translating requirements into solutions. You'll work across departments, perform data analysis, and drive improvements. This role offers visibility into all aspects of the business and opportunities for advancement into senior analyst or management positions.",
+      "aboutCompany": "BizOps Consulting is a business transformation consultancy founded in 2015, helping companies optimize operations and implement technology solutions. Based in Atlanta with 180 consultants, we serve mid-market and enterprise clients across industries. We're recognized for our analytical approach and successful implementations.",
+      "jobType": "company",
+      "employmentType": "full-time",
+      "noOfOpenings": 2,
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd799439023",
+      "salaryRange": {
+        "min": 70000,
+        "max": 100000
+      },
+      "preferences": {
+        "skills": ["SQL", "Excel", "Business Intelligence", "Requirements Gathering", "Process Modeling"],
+        "minExperience": 2,
+        "education": "Bachelor's in Business Administration, Economics, or related field",
+        "location": "Atlanta, GA"
+      }
+    }
+  ],
+  "onCampusJobs": [
+    {
+      "title": "Software Engineering Intern",
+      "description": "Summer internship opportunity for computer science students. Work on real projects with our engineering team and gain hands-on experience.",
+      "rolesAndResponsibilities": "Develop features for production applications. Write clean, maintainable code. Participate in code reviews. Collaborate with team members on projects. Learn best practices in software development. Attend tech talks and training sessions. Collaborate with team members on projects. Learn best practices in software development. Attend tech talks and training sessions.",
+      "perks": "Competitive internship stipend. Housing assistance available. Mentorship from senior engineers. Free meals and snacks. Intern events and networking opportunities. Potential for full-time offer. Modern development tools provided.",
+      "aboutJob": "Join our summer internship program and work on real features that will be deployed to production. You'll be mentored by senior engineers, learn industry best practices, and collaborate with talented teams. This isn't a coffee-fetching internship - you'll write code that impacts real users and products.",
+      "aboutCompany": "TechVision Inc. is a fast-growing SaaS company founded in 2018, specializing in enterprise productivity solutions. We have a proven internship program with 85% of interns receiving full-time offers. Many of our current senior engineers started as interns. We're committed to developing the next generation of tech talent.",
+      "jobType": "on-campus",
+      "employmentType": "internship",
+      "noOfOpenings": 15,
+      "duration": "10-12 weeks (Summer 2025)",
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd799439025",
+      "college": "Massachusetts Institute of Technology",
+      "salaryRange": {
+        "min": 6000,
+        "max": 8500
+      },
+      "preferences": {
+        "skills": ["Python", "Java", "Data Structures", "Algorithms"],
+        "minExperience": 0,
+        "education": "Currently pursuing Bachelor's in Computer Science",
+        "location": "San Francisco, CA"
+      },
+      "applicationLink": "https://company.com/careers/campus/mit-intern-2025"
+    },
+    {
+      "title": "Graduate Research Assistant",
+      "description": "Join our AI research team to work on cutting-edge machine learning projects. Published research opportunities available.",
+      "rolesAndResponsibilities": "Conduct research in machine learning and AI. Implement and test research ideas. Analyze experimental results. Write research papers for publication. Collaborate with research team. Present findings at team meetings.",
+      "perks": "Competitive monthly stipend. Publication opportunities. Access to high-performance computing resources. Attend conferences. Work with leading researchers. Flexible schedule. Potential for full-time research position.",
+      "aboutJob": "Contribute to groundbreaking AI research alongside world-class researchers. You'll work on novel machine learning problems, publish papers at top conferences, and push the boundaries of what's possible with AI. This position offers the perfect blend of academic research and practical application in a collaborative environment.",
+      "aboutCompany": "DataMinds Analytics is a leading data science consultancy founded in 2016, with a dedicated research division that has published over 50 papers at top AI conferences. Our research team collaborates with universities and contributes to open-source ML frameworks. We believe in advancing the field while solving real-world problems.",
+      "jobType": "on-campus",
+      "employmentType": "part-time",
+      "noOfOpenings": 3,
+      "duration": "1 year (renewable)",
+      "mode": "on-site",
+      "recruiter": "507f1f77bcf86cd799439027",
+      "college": "Stanford University",
+      "salaryRange": {
+        "min": 7000,
+        "max": 9000
+      },
+      "preferences": {
+        "skills": ["Machine Learning", "Deep Learning", "Research Methodology", "Python"],
+        "minExperience": 0,
+        "education": "Currently pursuing Master's or PhD in Computer Science or AI",
+        "location": "Palo Alto, CA"
+      },
+      "applicationLink": "https://company.com/careers/stanford-research-2025"
+    },
+    {
+      "title": "Data Analytics Co-op",
+      "description": "6-month co-op position for students interested in data analytics. Work with real business data and learn industry tools.",
+      "rolesAndResponsibilities": "Analyze business data to generate insights. Create dashboards and visualizations. Write SQL queries for data extraction. Assist in A/B testing and experimentation. Present findings to stakeholders. Learn analytics tools and methodologies.",
+      "perks": "Competitive co-op salary. Hands-on experience with real data. Mentorship from data analysts. Access to premium analytics tools. Networking opportunities. Professional development workshops. Resume and interview prep.",
+      "aboutJob": "Gain comprehensive experience analyzing real business data and generating insights that drive decisions. You'll work with tools like SQL, Python, and Tableau while learning from experienced analysts. This co-op provides excellent preparation for a data analytics career with exposure to the full analytics lifecycle.",
+      "aboutCompany": "DataMinds Analytics partners with universities to provide meaningful co-op experiences. With over 100 successful co-op placements, 75% of our co-op students return for full-time roles. We're committed to developing analytics talent and providing mentorship that jumpstarts careers.",
+      "jobType": "on-campus",
+      "employmentType": "internship",
+      "noOfOpenings": 8,
+      "duration": "6 months",
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd799439029",
+      "college": "University of Waterloo",
+      "salaryRange": {
+        "min": 5500,
+        "max": 7500
+      },
+      "preferences": {
+        "skills": ["SQL", "Python", "Excel", "Tableau", "Statistics"],
+        "minExperience": 0,
+        "education": "Currently pursuing degree in Statistics, Math, or related field",
+        "location": "Toronto, ON"
+      },
+      "applicationLink": "https://company.com/coop/waterloo-analytics-2025"
+    },
+    {
+      "title": "Marketing Intern",
+      "description": "Gain experience in digital marketing, social media management, and content creation. Perfect for business and marketing students.",
+      "rolesAndResponsibilities": "Create content for social media platforms. Assist with email marketing campaigns. Conduct market research and competitor analysis. Track and analyze marketing metrics. Support event planning and execution. Learn digital marketing tools and strategies.",
+      "perks": "Monthly stipend. Real-world marketing experience. Portfolio building opportunities. Mentorship from marketing professionals. Flexible schedule. Team lunches and events. Potential for extended internship or full-time role.",
+      "aboutJob": "Get hands-on experience running actual marketing campaigns across digital and social channels. You'll create content, analyze performance, and see how marketing drives business results. This internship provides practical skills in digital marketing, social media, and analytics that are highly valued in today's job market.",
+      "aboutCompany": "GrowthWave Marketing runs a comprehensive internship program that has launched the careers of over 200 marketing professionals. Our interns work on real client campaigns and build portfolios that help them land competitive marketing roles. We provide training, mentorship, and a supportive environment for learning.",
+      "jobType": "on-campus",
+      "employmentType": "internship",
+      "noOfOpenings": 5,
+      "duration": "12 weeks (Summer 2025)",
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd79943902b",
+      "college": "University of Pennsylvania",
+      "salaryRange": {
+        "min": 4500,
+        "max": 6000
+      },
+      "preferences": {
+        "skills": ["Social Media", "Content Writing", "Adobe Creative Suite", "Analytics"],
+        "minExperience": 0,
+        "education": "Currently pursuing degree in Marketing, Communications, or Business",
+        "location": "Philadelphia, PA"
+      },
+      "applicationLink": "https://company.com/internships/upenn-marketing-2025"
+    },
+    {
+      "title": "Product Management Intern",
+      "description": "Learn product management fundamentals by working alongside experienced PMs. Participate in product planning and user research.",
+      "rolesAndResponsibilities": "Support product managers with feature planning. Conduct user interviews and surveys. Analyze product metrics and user feedback. Create product documentation. Participate in sprint planning and standups. Learn product management methodologies.",
+      "perks": "Competitive internship compensation. Direct mentorship from senior PMs. Exposure to full product lifecycle. Networking with cross-functional teams. Product management training. Potential return offer. Professional development resources.",
+      "aboutJob": "Experience the full product lifecycle from ideation to launch. You'll work directly with Product Managers, participate in user research, analyze data, and contribute to product decisions. This internship provides comprehensive exposure to product management and is perfect for students considering PM careers in tech.",
+      "aboutCompany": "CloudSync Solutions has a structured PM internship program that provides real product management experience. Our PM interns have gone on to work at top tech companies including Google, Meta, and Amazon. We invest in teaching PM fundamentals and provide mentorship from experienced product leaders.",
+      "jobType": "on-campus",
+      "employmentType": "internship",
+      "noOfOpenings": 4,
+      "duration": "10-12 weeks",
+      "mode": "on-site",
+      "recruiter": "507f1f77bcf86cd79943902d",
+      "college": "Carnegie Mellon University",
+      "salaryRange": {
+        "min": 6500,
+        "max": 8000
+      },
+      "preferences": {
+        "skills": ["Product Thinking", "User Research", "Analytics", "Communication"],
+        "minExperience": 0,
+        "education": "Currently pursuing degree in Computer Science, Business, or Design",
+        "location": "Pittsburgh, PA"
+      },
+      "applicationLink": "https://company.com/campus/cmu-pm-intern-2025"
+    },
+    {
+      "title": "UI/UX Design Intern",
+      "description": "Create user interfaces and experiences for our products. Work with design team on real client projects.",
+      "rolesAndResponsibilities": "Design user interfaces for web and mobile apps. Create wireframes and prototypes. Conduct user research and usability testing. Collaborate with designers and developers. Iterate on designs based on feedback. Build design components and patterns.",
+      "perks": "Monthly stipend. Portfolio development opportunities. Mentorship from senior designers. Access to professional design tools. Design team events. Feedback sessions and critiques. Potential for full-time offer.",
+      "aboutJob": "Join our award-winning design team and work on real projects for clients and internal products. You'll learn the complete UX design process from research to final implementation, receive regular feedback and critiques, and build a portfolio that showcases professional-quality work.",
+      "aboutCompany": "DesignFirst Labs is renowned for design excellence and has won 15 design awards in the past three years. Our design internship program focuses on skill development through hands-on project work and mentorship. Many of our full-time designers started as interns and we maintain a strong alumni network.",
+      "jobType": "on-campus",
+      "employmentType": "internship",
+      "noOfOpenings": 6,
+      "duration": "12 weeks (Summer 2025)",
+      "mode": "hybrid",
+      "recruiter": "507f1f77bcf86cd79943902f",
+      "college": "Rhode Island School of Design",
+      "salaryRange": {
+        "min": 5000,
+        "max": 7000
+      },
+      "preferences": {
+        "skills": ["Figma", "Adobe XD", "User Research", "Wireframing", "Prototyping"],
+        "minExperience": 0,
+        "education": "Currently pursuing degree in Design, HCI, or related field",
+        "location": "Providence, RI"
+      },
+      "applicationLink": "https://company.com/design-intern/risd-2025"
+    }
+  ]
+}
