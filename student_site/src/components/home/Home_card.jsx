@@ -233,7 +233,7 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
   return (
     <div 
         ref={containerRef}
-        className="relative isolate w-full mt-6 h-full flex items-center justify-center overflow-hidden"
+        className="relative isolate w-full mt-3 h-full flex items-start justify-center overflow-hidden"
         onMouseMove={handleMouseMove}
     >
       <AnimatePresence>
@@ -274,7 +274,7 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
         onMouseLeave={handleMouseLeave}
         onClick={handleCardClick}
         style={{ cursor: cursorState.visible ? 'none' : 'default', backgroundColor: cardColor || '#EADCF8' }} 
-        className="relative w-[70%] h-[80%] rounded-[10px] border-4 border-gray-900 overflow-hidden shadow-2xl z-10"
+        className="relative w-[75%] h-[90%] rounded-[10px] border-4 border-gray-900 overflow-hidden shadow-2xl z-10"
       >
         {/* Ribbon */}
         <div className="absolute top-4 lg:top-8 right-0 z-20 pointer-events-none">

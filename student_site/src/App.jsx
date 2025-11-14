@@ -12,7 +12,7 @@ import SavedJobs from './pages/SavedJobs'
 
 function App() {
   return (
-    <div className='w-screen h-screen overflow-hidden flex items-center pl-4 gap-4 relative'>
+    <div className='w-screen h-screen overflow-hidden flex items-center justify-center gap-4 relative'>
       <Navbar />
       <div className='flex-1 h-full relative'>
         <Routes>

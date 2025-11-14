@@ -42,16 +42,55 @@ function Navbar() {
     };
 
     return (
-        <div className='w-[5%] lg:w-[6%] ml-4 rounded-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)] border-2 lg:border-4 border-[#363636] h-[95%] bg-[#FAF9F6] p-2 lg:p-4 flex flex-col items-center'>
-            <div className="flex flex-col items-center gap-4 lg:gap-6">
-                <Logo onClick={() => handleNavigation('/')} />
+        <>
+            {/* Desktop Navbar */}
+            <div className='hidden md:flex w-[5%] lg:w-[6%] ml-4 rounded-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)] border-2 lg:border-4 border-[#363636] h-[95%] bg-[#FAF9F6] p-2 lg:p-4 flex-col items-center'>
+                <div className="flex flex-col items-center gap-4 lg:gap-6">
+                    <Logo onClick={() => handleNavigation('/')} />
+                    <NavItem 
+                        isProfile={true} 
+                        onClick={() => handleNavigation('/profile')}
+                    />
+                </div>
+
+                <nav className="flex flex-col items-center gap-4 lg:gap-6 my-8 lg:my-12">
+                    <NavItem 
+                        icon={Home} 
+                        active={isActive('/')} 
+                        onClick={() => handleNavigation('/')}
+                    />
+                    <NavItem 
+                        icon={Search} 
+                        active={isActive('/explore')} 
+                        onClick={() => handleNavigation('/explore')}
+                    />
+                    <NavItem 
+                        icon={Briefcase} 
+                        active={isActive('/jobs')} 
+                        onClick={() => handleNavigation('/jobs')}
+                    />
+                    <NavItem 
+                        icon={MessageSquare} 
+                        active={isActive('/chat')} 
+                        onClick={() => handleNavigation('/chat')}
+                    />
+                </nav>
+
+                <div className="mt-auto">
+                    <NavItem 
+                        icon={Settings} 
+                        active={isActive('/settings')} 
+                        onClick={() => handleNavigation('/settings')}
+                    />
+                </div>
+            </div>
+
+            {/* Mobile Navbar */}
+            <div className='md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[85%] rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] border-4 border-[#363636] bg-[#FAF9F6] p-4 flex items-center justify-between z-40'>
                 <NavItem 
                     isProfile={true} 
                     onClick={() => handleNavigation('/profile')}
                 />
-            </div>
-
-            <nav className="flex flex-col items-center gap-4 lg:gap-6 my-8 lg:my-12">
                 <NavItem 
                     icon={Home} 
                     active={isActive('/')} 
@@ -72,16 +111,8 @@ function Navbar() {
                     active={isActive('/chat')} 
                     onClick={() => handleNavigation('/chat')}
                 />
-            </nav>
-
-            <div className="mt-auto">
-                <NavItem 
-                    icon={Settings} 
-                    active={isActive('/settings')} 
-                    onClick={() => handleNavigation('/settings')}
-                />
             </div>
-        </div>
+        </>
     )
 }
 
