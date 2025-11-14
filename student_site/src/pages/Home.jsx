@@ -172,7 +172,7 @@ function Home() {
   return (
     <div className="relative w-full flex flex-col justify-center items-center h-screen overflow-hidden">
       <div className="hidden w-full h-full md:flex md:flex-col md:items-center">
-        <h1 className="text-3xl pl-7 font-[jost-bold] mt-24 mb-3 text-[#1f1f1f] text-left tracking-tight self-start ">
+        <h1 className="text-3xl ml-14 font-[jost-bold] mt-24 text-[#1f1f1f] text-left tracking-tight self-start ">
           SWIPE AND PICK YOUR JOB
         </h1>
         <div className="w-full h-full">

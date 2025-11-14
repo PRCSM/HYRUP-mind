@@ -1,9 +1,10 @@
 import React from 'react'
+import Explore_Pintrest from '../components/explore/Explore_Pintrest'
 
 function Explore() {
     return (
-        <div>
-            <h1>Explore Page</h1>
+        <div className='relative w-full pt-20 flex flex-col h-screen overflow-hidden'>
+            <Explore_Pintrest/>
         </div>
     )
 }
