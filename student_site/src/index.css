@@ -77,3 +77,13 @@ body {
 .custom-scroll::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+/* Hide scrollbar for carousel */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
