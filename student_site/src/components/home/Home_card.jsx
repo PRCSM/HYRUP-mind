@@ -11,14 +11,33 @@ import {
 import InfoPill from './InfoPill';
 import SkillTag from './SkillTag';
 import PerkPill from './PerkPill';
+import HeartAnimation from '../common/HeartAnimation';
+import jobStore from '../../utils/jobStore';
 
 const SECTIONS = 4;
 
 export default function Home_card({ jobData, onReject, onApply, cardColor }) {
   const [activeSection, setActiveSection] = useState(0);
   const [cursorState, setCursorState] = useState({ visible: false, type: null, x: 0, y: 0 });
+  const [showHeartAnimation, setShowHeartAnimation] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const cardRef = useRef(null);
   const containerRef = useRef(null);
+
+  // Check if job is already saved
+  React.useEffect(() => {
+    if (jobData) {
+      const jobId = jobData.id || jobData.title;
+      setIsSaved(jobStore.isJobSaved(jobId, jobData.title));
+      
+      // Subscribe to changes
+      const unsubscribe = jobStore.subscribe(() => {
+        setIsSaved(jobStore.isJobSaved(jobId, jobData.title));
+      });
+      
+      return () => unsubscribe();
+    }
+  }, [jobData]);
 
     const {
         title,
@@ -225,9 +244,71 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
 
     const handleApplyClick = (e) => {
         e.stopPropagation();
+        
+        // Save to Applied Jobs if it's an In House (company) job
+        try {
+            const normalizedType = typeof jobType === 'string' 
+                ? jobType.toLowerCase().replace(/\s+/g, '-') 
+                : '';
+            
+            if (normalizedType === 'company') {
+                const applied = JSON.parse(localStorage.getItem('appliedJobs') || '[]');
+                
+                // Check if already applied
+                const jobKey = jobData.id || jobData.title;
+                const alreadyApplied = applied.some(appliedJob => 
+                    (appliedJob.id && appliedJob.id === jobKey) || appliedJob.title === jobData.title
+                );
+                
+                if (!alreadyApplied) {
+                    const jobToSave = {
+                        ...jobData,
+                        applicationStatus: 'Pending',
+                        appliedDate: new Date().toISOString()
+                    };
+                    applied.push(jobToSave);
+                    localStorage.setItem('appliedJobs', JSON.stringify(applied));
+                    window.dispatchEvent(new Event('jobsUpdated'));
+                }
+            } else {
+                // For non-company jobs, save to Saved Jobs
+                const saved = JSON.parse(localStorage.getItem('savedJobs') || '[]');
+                
+                const jobKey = jobData.id || jobData.title;
+                const alreadySaved = saved.some(savedJob => 
+                    (savedJob.id && savedJob.id === jobKey) || savedJob.title === jobData.title
+                );
+                
+                if (!alreadySaved) {
+                    const jobToSave = {
+                        ...jobData,
+                        savedDate: new Date().toISOString()
+                    };
+                    saved.push(jobToSave);
+                    localStorage.setItem('savedJobs', JSON.stringify(saved));
+                    window.dispatchEvent(new Event('jobsUpdated'));
+                }
+            }
+        } catch (error) {
+            console.error('Error applying to job:', error);
+        }
+        
         if (typeof onApply === 'function') {
             onApply(jobData);
         }
+    };
+
+    const handleSaveJob = (e) => {
+        e.stopPropagation();
+        
+        const newSavedState = jobStore.saveJob(jobData);
+        setIsSaved(newSavedState);
+        
+        if (newSavedState) {
+            setShowHeartAnimation(true);
+        }
+        
+        window.dispatchEvent(new Event('jobsUpdated'));
     };
 
   return (
@@ -236,6 +317,10 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
         className="relative isolate w-full mt-3 h-full flex items-start justify-center overflow-hidden"
         onMouseMove={handleMouseMove}
     >
+      <HeartAnimation 
+        show={showHeartAnimation} 
+        onComplete={() => setShowHeartAnimation(false)}
+      />
       <AnimatePresence>
         {cursorState.visible && (
             <motion.div 
@@ -370,10 +455,16 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
                         <button 
                             onMouseEnter={() => setCursorState(prev => ({ ...prev, visible: false }))}
                             onMouseLeave={(e) => handleMouseMove(e)}
-                            onClick={(e) => e.stopPropagation()}
+                            onClick={handleSaveJob}
                             className="w-10 h-10 lg:w-16 lg:h-16 bg-pink-300 border-2 lg:border-4 border-gray-900 rounded-xl lg:rounded-2xl flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] lg:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:brightness-110 cursor-pointer"
+                            aria-label={isSaved ? 'Remove from saved jobs' : 'Save this job'}
                         >
-                           <Heart fill="deeppink" stroke="none" className="w-5 h-5 lg:w-8 lg:h-8" />
+                           <Heart 
+                             fill={isSaved ? 'deeppink' : 'none'} 
+                             stroke={isSaved ? 'none' : 'deeppink'} 
+                             strokeWidth={2.5}
+                             className="w-5 h-5 lg:w-8 lg:h-8 transition-all duration-200" 
+                           />
                         </button>
                     </div>
                 </div>

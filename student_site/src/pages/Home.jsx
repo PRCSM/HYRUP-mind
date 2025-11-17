@@ -3,6 +3,7 @@ import Home_cards from "../components/home/Home_cards";
 import HomeCardMobile from "../components/home/Home_card_mobile";
 import HomeJobMobile from "../components/home/HomeJob_mobile";
 import jobDataList from "../demodata/demodata.json";
+import jobStore from "../utils/jobStore";
 
 const COLOR_PALETTE = [
   { primary: "#3B1FFF", secondary: "#25138E", detail: "#FF8A65" },
@@ -155,11 +156,46 @@ const flattenJobs = (data) => {
 
 function Home() {
   const [selectedJob, setSelectedJob] = useState(null);
+  const [appliedJobIds, setAppliedJobIds] = useState([]);
+
+  // Load applied jobs to filter them out
+  React.useEffect(() => {
+    const updateAppliedJobs = () => {
+      const ids = jobStore.getAppliedJobIds();
+      setAppliedJobIds(ids);
+    };
+
+    updateAppliedJobs();
+
+    // Subscribe to jobStore changes
+    const unsubscribe = jobStore.subscribe(() => {
+      updateAppliedJobs();
+    });
+
+    // Listen for job applied event
+    const handleJobApplied = () => {
+      updateAppliedJobs();
+    };
+
+    window.addEventListener('jobApplied', handleJobApplied);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('jobApplied', handleJobApplied);
+    };
+  }, []);
 
   const jobs = useMemo(() => {
     const rawJobs = flattenJobs(jobDataList);
-    return rawJobs.map((job, index) => decorateJob(job, index));
-  }, []);
+    return rawJobs
+      .map((job, index) => decorateJob(job, index))
+      .filter(job => {
+        // Check if either the id or title is in appliedJobIds
+        const isAppliedById = job.id && appliedJobIds.includes(job.id);
+        const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
+        return !isAppliedById && !isAppliedByTitle;
+      });
+  }, [appliedJobIds]);
 
   const handleCardSelect = useCallback((job) => {
     setSelectedJob(job);

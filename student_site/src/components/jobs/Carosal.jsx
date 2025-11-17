@@ -92,7 +92,7 @@ function Carosal({ jobsData = [], onJobClick }) {
             <motion.button
                 disabled={index === 0}
                 onClick={() => setIndex((i) => Math.max(0, i - 1))}
-                className={`absolute left-1 md:-left-6 top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all z-30 border-2 border-black
+                className={`absolute hidden md:block left-1 md:-left-6 top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all z-30 border-2 border-black
                     ${
                         index === 0
                             ? 'opacity-40 cursor-not-allowed bg-gray-300'
@@ -115,7 +115,7 @@ function Carosal({ jobsData = [], onJobClick }) {
             <motion.button
                 disabled={index === maxIndex}
                 onClick={() => setIndex((i) => Math.min(maxIndex, i + 1))}
-                className={`absolute right-1 md:right-6 top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all z-30 border-2 border-black
+                className={`absolute hidden md:block right-1 md:right-6 top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all z-30 border-2 border-black
                     ${
                         index === maxIndex
                             ? 'opacity-40 cursor-not-allowed bg-gray-300'

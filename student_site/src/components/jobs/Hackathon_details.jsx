@@ -80,7 +80,7 @@ function Hackathon_details({ hackathon, isOpen, onClose }) {
                             animate={{ y: 0 }}
                             exit={{ y: '100%' }}
                             transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-                            className="mt-auto w-full md:w-[90vw] lg:w-[70vw] md:mx-auto h-[92vh] overflow-hidden rounded-t-[20px] border-[3px] border-[#1f1f1f] bg-[#F5F5F5] shadow-[0_-10px_0px_rgba(0,0,0,0.35)]"
+                            className="mt-auto w-full md:w-[90vw] lg:w-[70vw] md:mx-auto h-[90vh] md:h-[85vh] overflow-hidden rounded-t-[20px] border-[3px] border-[#1f1f1f] bg-[#F5F5F5] shadow-[0_-5px_0px_rgba(0,0,0,0.35)]"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="flex h-full flex-col">

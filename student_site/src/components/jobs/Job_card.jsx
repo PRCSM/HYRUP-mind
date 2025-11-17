@@ -50,12 +50,30 @@ function Job_card({ job, onClick }) {
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
+    // Check if it's an applied job (has applicationStatus)
+    const isAppliedJob = job?.applicationStatus !== undefined;
+
+    // Get status color
+    const getStatusColor = (status) => {
+        const statusColors = {
+            'Pending': 'bg-[#FEF3C7] text-[#92400E]',
+            'Under Review': 'bg-[#DBEAFE] text-[#1E40AF]',
+            'Shortlisted': 'bg-[#D1FAE5] text-[#065F46]',
+            'Rejected': 'bg-[#FEE2E2] text-[#991B1B]',
+            'Accepted': 'bg-[#D1FAE5] text-[#065F46]'
+        };
+        return statusColors[status] || 'bg-[#FEF3C7] text-[#92400E]';
+    };
+
     // Use appropriate values based on whether it's a hackathon or job
-    const displayCompany = isHackathon ? organizer : extractCompanyName();
+    const displayCompany = isAppliedJob ? job.applicationStatus : (isHackathon ? organizer : extractCompanyName());
     const displayLocation = location || preferences?.location || "Coimbatore, Tamil Nadu, India";
     const displayJobType = isHackathon ? formatDate(startDate) : jobType || "In House";
     const displayEmploymentType = isHackathon ? formatDate(endDate) : employmentType || "FULL TIME";
     const displayOpenings = isHackathon ? mode : (noOfOpenings ? `${noOfOpenings} opening${noOfOpenings !== 1 ? 's' : ''}` : openings || "200 openings");
+
+    // Determine if badge should be shown
+    const showBadge = !isAppliedJob;
 
     // Determine pill color based on jobType
     const getPillColor = () => {
@@ -109,12 +127,20 @@ function Job_card({ job, onClick }) {
                         {title}
                     </h4>
 
-                    {/* Company Name with Verified Badge */}
+                    {/* Company Name with Verified Badge OR Application Status */}
                     <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2 min-w-0">
-                        <span className="text-[14px] md:text-[18px] text-gray-900 font-medium truncate" style={{ fontFamily: 'jost-medium' }}>
-                            {displayCompany}
-                        </span>
-                        <BadgeCheck className="w-[14px] md:w-[18px] h-[14px] md:h-[18px] text-blue-500 fill-blue-500 shrink-0" strokeWidth={1.5} />
+                        {isAppliedJob ? (
+                            <span className={`px-3 md:px-4 py-1 rounded-full text-[12px] md:text-[15px] font-bold border-[2px] border-black ${getStatusColor(displayCompany)}`} style={{ fontFamily: 'jost-bold' }}>
+                                {displayCompany}
+                            </span>
+                        ) : (
+                            <>
+                                <span className="text-[14px] md:text-[18px] text-gray-900 font-medium truncate" style={{ fontFamily: 'jost-medium' }}>
+                                    {displayCompany}
+                                </span>
+                                {showBadge && <BadgeCheck className="w-[14px] md:w-[18px] h-[14px] md:h-[18px] text-black fill-blue-500 shrink-0" strokeWidth={1.5} />}
+                            </>
+                        )}
                     </div>
 
                     {/* Location and Openings */}
@@ -129,7 +155,7 @@ function Job_card({ job, onClick }) {
                 </div>
 
                 {/* Right Section - Pills */}
-                <div className="flex flex-col text-center gap-1 md:gap-1.5 shrink-0">
+                <div className="flex flex-col uppercase text-center gap-1 md:gap-1.5 shrink-0">
                     <span className={`px-3 md:px-6 py-1 md:py-2 rounded-full text-black font-semibold text-[10px] md:text-[13px] whitespace-nowrap transition-colors duration-200 ${getPillColor()}`}>
                         {displayJobType}
                     </span>

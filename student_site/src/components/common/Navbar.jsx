@@ -3,10 +3,10 @@ import { Home, Search, Briefcase, MessageSquare, Settings } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const NavItem = ({ icon: Icon, active = false, isProfile = false, onClick }) => {
-    const baseClasses = "w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer";
+    const baseClasses = "w-10 h-10 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer";
     const activeClasses = "bg-[#D9F99D] border-2 border-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]";
     const inactiveClasses = "bg-[#E5E7EB] border-2 border-transparent hover:bg-gray-300";
-    const profileClasses = "w-12 h-12 lg:w-14 lg:h-14 rounded-full border-4 border-[#D9F99D] shadow-lg cursor-pointer";
+    const profileClasses = "w-10 h-10 lg:w-14 lg:h-14 rounded-full border-4 border-[#D9F99D] shadow-lg cursor-pointer";
 
     if (isProfile) {
         return (
@@ -86,7 +86,7 @@ function Navbar() {
             </div>
 
             {/* Mobile Navbar */}
-            <div className='md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[85%] rounded-[20px] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] border-4 border-[#363636] bg-[#FAF9F6] p-4 flex items-center justify-between z-40'>
+            <div className='md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[80%] rounded-[15px] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] border-4 border-[#363636] bg-[#FAF9F6] p-2 flex items-center justify-between z-40'>
                 <NavItem 
                     isProfile={true} 
                     onClick={() => handleNavigation('/profile')}

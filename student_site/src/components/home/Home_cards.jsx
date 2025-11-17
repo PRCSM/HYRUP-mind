@@ -2,13 +2,42 @@ import React, { useState, useEffect } from 'react';
 import Home_card from './Home_card';
 import jobDataList from '../../demodata/demodata.json';
 import { AnimatePresence, motion } from 'framer-motion';
+import jobStore from '../../utils/jobStore';
 
 export default function Home_cards() {
   const [cards, setCards] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [appliedJobIds, setAppliedJobIds] = useState([]);
   // To track exit direction for animation (up or down)
   const [exitY, setExitY] = useState(0); 
     const CARD_COLORS = ['#E3FEAA', '#B8D1E6', '#E6D3FC'];
+
+  // Load applied jobs to filter them out
+  useEffect(() => {
+    const updateAppliedJobs = () => {
+      const ids = jobStore.getAppliedJobIds();
+      setAppliedJobIds(ids);
+    };
+
+    updateAppliedJobs();
+
+    // Subscribe to jobStore changes
+    const unsubscribe = jobStore.subscribe(() => {
+      updateAppliedJobs();
+    });
+
+    // Listen for job applied event
+    const handleJobApplied = () => {
+      updateAppliedJobs();
+    };
+
+    window.addEventListener('jobApplied', handleJobApplied);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('jobApplied', handleJobApplied);
+    };
+  }, []);
 
   useEffect(() => {
     if (!jobDataList) return;
@@ -20,13 +49,20 @@ export default function Home_cards() {
           ...(Array.isArray(jobDataList.onCampusJobs) ? jobDataList.onCampusJobs : []),
         ];
 
-    const normalizedCards = sourceArray.map((job, index) => ({
+    // Filter out applied jobs
+    const filteredJobs = sourceArray.filter(job => {
+      const isAppliedById = job.id && appliedJobIds.includes(job.id);
+      const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
+      return !isAppliedById && !isAppliedByTitle;
+    });
+
+    const normalizedCards = filteredJobs.map((job, index) => ({
       id: job?.id ?? `job-${index}`,
       ...job,
     }));
 
     setCards(normalizedCards);
-  }, []);
+  }, [appliedJobIds]);
 
   // Updated to handle 'up' (apply) or 'down' (reject) directions
   const removeCard = (direction) => {

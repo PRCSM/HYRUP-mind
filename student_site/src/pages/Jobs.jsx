@@ -7,6 +7,7 @@ import Job_Details from '../components/jobs/Job_Details'
 import Hackathon_details from '../components/jobs/Hackathon_details'
 import demoData from '../demodata/demodata.json'
 import hackathonData from '../demodata/hackathon.json'
+import jobStore from '../utils/jobStore'
 
 
 function Jobs() {
@@ -15,12 +16,45 @@ function Jobs() {
     const [isJobDetailsOpen, setIsJobDetailsOpen] = useState(false);
     const [selectedHackathon, setSelectedHackathon] = useState(null);
     const [isHackathonDetailsOpen, setIsHackathonDetailsOpen] = useState(false);
+    const [appliedJobIds, setAppliedJobIds] = useState([]);
 
-    // Get all jobs
+    // Load applied jobs to filter them out
+    React.useEffect(() => {
+        const updateAppliedJobs = () => {
+            const ids = jobStore.getAppliedJobIds();
+            setAppliedJobIds(ids);
+        };
+
+        updateAppliedJobs();
+
+        // Subscribe to jobStore changes
+        const unsubscribe = jobStore.subscribe(() => {
+            updateAppliedJobs();
+        });
+
+        // Listen for job applied event
+        const handleJobApplied = () => {
+            updateAppliedJobs();
+        };
+
+        window.addEventListener('jobApplied', handleJobApplied);
+
+        return () => {
+            unsubscribe();
+            window.removeEventListener('jobApplied', handleJobApplied);
+        };
+    }, []);
+
+    // Get all jobs and filter out applied ones
     const allJobs = [
         ...(demoData.companyJobs || []),
         ...(demoData.onCampusJobs || [])
-    ];
+    ].filter(job => {
+        // Check if either the id or title is in appliedJobIds
+        const isAppliedById = job.id && appliedJobIds.includes(job.id);
+        const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
+        return !isAppliedById && !isAppliedByTitle;
+    });
 
     // Get all hackathons - hackathon.json is an array directly
     const allHackathons = Array.isArray(hackathonData) ? hackathonData : [];

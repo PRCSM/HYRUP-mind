@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, BadgeCheck, Heart, MessageSquare } from 'lucide-react';
+import HeartAnimation from '../common/HeartAnimation';
+import jobStore from '../../utils/jobStore';
 
 const toList = (value) => {
 	if (!value) return [];
@@ -18,30 +20,118 @@ const toList = (value) => {
 };
 
 function Job_Details({ job, isOpen, onClose }) {
+    const [showHeartAnimation, setShowHeartAnimation] = useState(false);
+    const [showApplyAnimation, setShowApplyAnimation] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
+    const [isApplied, setIsApplied] = useState(false);
+    
+    // Check if job is already saved - MUST be before any conditional returns
+    React.useEffect(() => {
+        if (job) {
+            const jobId = job.id || job.title;
+            setIsSaved(jobStore.isJobSaved(jobId, job.title));
+            setIsApplied(jobStore.isJobApplied(jobId, job.title));
+            
+            // Subscribe to changes
+            const unsubscribe = jobStore.subscribe(() => {
+                setIsSaved(jobStore.isJobSaved(jobId, job.title));
+                setIsApplied(jobStore.isJobApplied(jobId, job.title));
+            });
+            
+            return () => unsubscribe();
+        }
+    }, [job]);
+    
     if (!job) return null;
+
+    const handleSaveJob = () => {
+        const newSavedState = jobStore.saveJob(job);
+        setIsSaved(newSavedState);
+        
+        if (newSavedState) {
+            setShowHeartAnimation(true);
+        }
+        
+        window.dispatchEvent(new Event('jobsUpdated'));
+    };
+
+    const handleApplyJob = () => {
+        // Check if it's an In House job
+        const normalizedType = typeof jobType === 'string' 
+            ? jobType.toLowerCase().replace(/\s+/g, '-') 
+            : '';
+        
+        if (normalizedType !== 'company') {
+            return; // Only allow applying to In House jobs
+        }
+        
+        const result = jobStore.applyToJob(job);
+        
+        if (result.success) {
+            setShowApplyAnimation(true);
+            setIsApplied(true);
+            
+            window.dispatchEvent(new Event('jobsUpdated'));
+            window.dispatchEvent(new Event('jobApplied'));
+            
+            setTimeout(() => {
+                onClose();
+            }, 1500);
+        }
+    };
+
+    // Extract company name from aboutCompany field
+    const extractCompanyName = () => {
+        if (job.company) return job.company;
+        if (job.companyName) return job.companyName;
+        if (job.aboutCompany) {
+            const match = job.aboutCompany.match(/^([^.]+?)\s+(?:is|was|are)/);
+            if (match) return match[1].trim();
+        }
+        return "Company";
+    };
 
     const {
         title = "UI/UX Designer",
-        company = "Lumel Technologies",
-        location = "Coimbatore, Tamil Nadu, India",
-        postedTime = "3 weeks ago",
-        applicantCount = "Over 100 people",
-        jobType = "In House",
-        employmentType = "Full time",
-        duration = "2month",
-        mode = "Online",
-        stipend = "20k/month",
-        preferences = {},
-        openings = "75",
+        description,
         rolesAndResponsibilities,
         perks,
         aboutJob,
-        aboutCompany
+        aboutCompany,
+        jobType = "In House",
+        employmentType = "Full time",
+        noOfOpenings = 0,
+        mode = "Online",
+        recruiter,
+        salaryRange = {},
+        preferences = {}
     } = job;
+
+    const company = extractCompanyName();
+    const location = preferences?.location || "Location not specified";
+    const openings = noOfOpenings;
+    const stipend = salaryRange.min && salaryRange.max 
+        ? `$${(salaryRange.min/1000).toFixed(0)}k - $${(salaryRange.max/1000).toFixed(0)}k`
+        : "Competitive";
+    const duration = employmentType === "full-time" ? "Permanent" : "Contract";
+    const postedTime = "Recently posted";
+    const applicantCount = "View applicants";
 
     const skills = Array.isArray(preferences?.skills) ? preferences.skills : [];
     const rolesList = toList(rolesAndResponsibilities);
     const perksList = toList(perks);
+
+    // Get status color for button
+    const getStatusButtonColor = (status) => {
+        const statusColors = {
+            'Pending': 'bg-[#FEF3C7] border-[#92400E] text-[#92400E]',
+            'Under Review': 'bg-[#DBEAFE] border-[#1E40AF] text-[#1E40AF]',
+            'Shortlisted': 'bg-[#D1FAE5] border-[#065F46] text-[#065F46]',
+            'Rejected': 'bg-[#FEE2E2] border-[#991B1B] text-[#991B1B]',
+            'Accepted': 'bg-[#D1FAE5] border-[#065F46] text-[#065F46]'
+        };
+        return statusColors[status] || 'bg-[#FEF3C7] border-[#92400E] text-[#92400E]';
+    };
 
     // Determine pill color based on jobType
     const getPillColor = () => {
@@ -58,6 +148,103 @@ function Job_Details({ job, isOpen, onClose }) {
         <AnimatePresence>
             {isOpen && (
                 <>
+                    <HeartAnimation 
+                        show={showHeartAnimation} 
+                        onComplete={() => setShowHeartAnimation(false)}
+                    />
+                    
+                    {/* Apply Success Animation */}
+                    <AnimatePresence>
+                        {showApplyAnimation && (
+                            <motion.div
+                                className="fixed inset-0 z-[9999] pointer-events-none flex items-center justify-center"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                onAnimationComplete={() => {
+                                    setTimeout(() => setShowApplyAnimation(false), 1200);
+                                }}
+                            >
+                                {/* Success Checkmark */}
+                                <motion.div
+                                    initial={{ scale: 0, rotate: -180 }}
+                                    animate={{ 
+                                        scale: [0, 1.2, 1],
+                                        rotate: 0
+                                    }}
+                                    transition={{ 
+                                        duration: 0.6,
+                                        ease: [0.34, 1.56, 0.64, 1]
+                                    }}
+                                    className="relative"
+                                >
+                                    <div className="w-32 h-32 md:w-40 md:h-40 bg-[#E3FEAA] rounded-full border-4 border-black flex items-center justify-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                                        <svg className="w-20 h-20 md:w-24 md:h-24 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <motion.path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={3}
+                                                d="M5 13l4 4L19 7"
+                                                initial={{ pathLength: 0 }}
+                                                animate={{ pathLength: 1 }}
+                                                transition={{ duration: 0.5, delay: 0.2 }}
+                                            />
+                                        </svg>
+                                    </div>
+                                    
+                                    {/* Success Text */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.4 }}
+                                        className="absolute -bottom-16 left-1/2 -translate-x-1/2 whitespace-nowrap"
+                                    >
+                                        <p className="text-2xl md:text-3xl font-extrabold text-black" style={{ fontFamily: 'jost-bold' }}>
+                                            Application Submitted!
+                                        </p>
+                                    </motion.div>
+                                </motion.div>
+
+                                {/* Confetti particles */}
+                                {[...Array(12)].map((_, i) => {
+                                    const angle = (i * 360) / 12;
+                                    const distance = 100 + (i % 2) * 50;
+                                    const x = Math.cos((angle * Math.PI) / 180) * distance;
+                                    const y = Math.sin((angle * Math.PI) / 180) * distance;
+
+                                    return (
+                                        <motion.div
+                                            key={`confetti-${i}`}
+                                            className="absolute w-3 h-3 rounded-full"
+                                            style={{ 
+                                                backgroundColor: ['#E3FEAA', '#B8D1E6', '#E6D3FC', '#FAB648'][i % 4]
+                                            }}
+                                            initial={{ 
+                                                x: 0, 
+                                                y: 0, 
+                                                scale: 0,
+                                                opacity: 0 
+                                            }}
+                                            animate={{ 
+                                                x: x,
+                                                y: y,
+                                                scale: [0, 1.5, 0],
+                                                opacity: [0, 1, 0],
+                                                rotate: [0, 360]
+                                            }}
+                                            transition={{ 
+                                                duration: 1,
+                                                delay: 0.3 + i * 0.05,
+                                                ease: 'easeOut'
+                                            }}
+                                        />
+                                    );
+                                })}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                    
                     {/* Overlay */}
                     <motion.div
                         key="overlay"
@@ -82,7 +269,7 @@ function Job_Details({ job, isOpen, onClose }) {
                             animate={{ y: 0 }}
                             exit={{ y: '100%' }}
                             transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-                            className="mt-auto w-full md:w-[90vw] lg:w-[70vw] md:mx-auto h-[92vh] overflow-hidden rounded-t-[20px] border-[3px] border-[#1f1f1f] bg-[#F5F5F5] shadow-[0_-10px_0px_rgba(0,0,0,0.35)]"
+                            className="mt-auto w-full md:w-[90vw] lg:w-[70vw] md:mx-auto h-[90vh] md:h-[85vh] overflow-hidden rounded-t-[20px] border-[3px] border-[#1f1f1f] bg-[#F5F5F5] shadow-[0_-5px_0px_rgba(0,0,0,0.35)]"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="flex h-full flex-col">
@@ -124,7 +311,7 @@ function Job_Details({ job, isOpen, onClose }) {
                                                 <p className="text-base md:text-[25px] font-bold text-[#1f1f1f]" style={{ fontFamily: 'jost-semibold' }}>
                                                     {company}
                                                 </p>
-                                                <BadgeCheck className="h-5 w-5 text-blue-500 fill-blue-500" strokeWidth={2.5} />
+                                                <BadgeCheck className="h-5 w-5 text-black fill-blue-500" strokeWidth={2.5} />
                                             </div>
                                         </div>
 
@@ -135,10 +322,10 @@ function Job_Details({ job, isOpen, onClose }) {
 
                                         {/* Tags */}
                                         <div className="flex flex-wrap gap-2 mb-4">
-                                            <span className="rounded-full border-2 border-dashed border-[#1f1f1f] bg-[#FFFDE7] md:bg-[#FFF9E6] px-4 py-1.5 text-xs md:text-[15px] font-bold text-[#1f1f1f]" style={{ fontFamily: 'jost-bold' }}>
-                                                On-site
+                                            <span className="rounded-full border-2 border-dashed border-[#1f1f1f] bg-[#FFFDE7] md:bg-[#FFF9E6] px-4 py-1.5 text-xs md:text-[15px] font-bold text-[#1f1f1f] capitalize" style={{ fontFamily: 'jost-bold' }}>
+                                                {mode}
                                             </span>
-                                            <span className="rounded-full border-2 border-dashed border-[#1f1f1f] bg-[#FFFDE7] md:bg-[#FFF9E6] px-4 py-1.5 text-xs md:text-[15px] font-bold text-[#1f1f1f]" style={{ fontFamily: 'jost-bold' }}>
+                                            <span className="rounded-full border-2 border-dashed border-[#1f1f1f] bg-[#FFFDE7] md:bg-[#FFF9E6] px-4 py-1.5 text-xs md:text-[15px] font-bold text-[#1f1f1f] capitalize" style={{ fontFamily: 'jost-bold' }}>
                                                 {employmentType}
                                             </span>
                                         </div>
@@ -146,17 +333,29 @@ function Job_Details({ job, isOpen, onClose }) {
                                         {/* Action Buttons */}
                                         <div className="flex items-center justify-between gap-3 mb-3 md:mb-4">
                                             <button
-                                                className="flex items-center justify-center rounded-[10px] border-[3px] border-[#1f1f1f] bg-[#E3FEAA] px-6 md:px-8 py-3 text-base font-extrabold text-[#1f1f1f] shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-transform active:translate-y-0.5 cursor-pointer"
+                                                onClick={handleApplyJob}
+                                                disabled={isApplied}
+                                                className={`flex items-center justify-center rounded-[10px] border-[3px] px-6 md:px-8 py-3 text-base font-extrabold shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-all ${
+                                                    isApplied 
+                                                        ? 'bg-gray-300 border-gray-500 text-gray-600 cursor-not-allowed' 
+                                                        : 'border-[#1f1f1f] bg-[#E3FEAA] text-[#1f1f1f] hover:shadow-[8px_8px_0px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer'
+                                                }`}
                                                 style={{ fontFamily: 'jost-bold' }}
                                             >
-                                                Apply Now
+                                                {isApplied ? 'Already Applied' : 'Apply Now'}
                                             </button>
                                             <div className="flex justify-between items-center gap-3 md:gap-4">
                                                 <button
-                                                    className="flex items-center justify-center rounded-[10px] border-[3px] border-[#1f1f1f] bg-[#F8BBD0] p-3.5 shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-transform active:translate-y-0.5 cursor-pointer"
-                                                    aria-label="Save job"
+                                                    onClick={handleSaveJob}
+                                                    className="flex items-center justify-center rounded-[10px] border-[3px] border-[#1f1f1f] bg-[#F8BBD0] p-3.5 shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-all duration-200 active:translate-y-0.5 hover:shadow-[8px_8px_0px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 cursor-pointer"
+                                                    aria-label={isSaved ? "Remove from saved jobs" : "Save job"}
                                                 >
-                                                    <Heart className="h-6 w-6 text-[#1f1f1f]" strokeWidth={2.5} />
+                                                    <Heart 
+                                                        className="h-6 w-6 transition-all duration-200" 
+                                                        strokeWidth={2.5}
+                                                        fill={isSaved ? '#E91E63' : 'none'}
+                                                        color={isSaved ? '#E91E63' : '#1f1f1f'}
+                                                    />
                                                 </button>
                                                 <button
                                                     className="flex items-center justify-center rounded-[10px] border-[3px] border-[#1f1f1f] bg-white p-3.5 shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-transform active:translate-y-0.5 cursor-pointer"
@@ -279,7 +478,7 @@ function Job_Details({ job, isOpen, onClose }) {
                                             </h2>
                                             <div className="rounded-[10px] md:rounded-[15px] border-[3px] border-[#1f1f1f] bg-white p-4 md:p-5 shadow-[4px_4px_0px_rgba(0,0,0,0.2)] md:shadow-[4px_4px_0px_rgba(0,0,0,1)]">
                                                 <p className="whitespace-pre-line text-sm md:text-[17px] leading-relaxed text-[#1f1f1f]" style={{ fontFamily: 'jost-regular' }}>
-                                                    {aboutJob || 'Details will be shared during the interview process.'}
+                                                    {aboutJob || description || 'Details will be shared during the interview process.'}
                                                 </p>
                                             </div>
                                         </section>
