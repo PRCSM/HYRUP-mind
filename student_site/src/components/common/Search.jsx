@@ -46,7 +46,7 @@ function Search() {
     };
 
     return (
-        <div className="z-50 px-2 sm:px-0 pt-4 md:p-4 overflow-y-hidden w-full sm:w-[95%] md:w-[80%] mx-auto custom-scroll right-0 md:right-10 top-0 fixed flex flex-col items-center max-h-screen">
+        <div className="z-30 px-2 sm:px-0 pt-4 md:p-4 overflow-y-hidden w-full sm:w-[95%] md:w-[80%] mx-auto  custom-scroll right-0 md:right-10 top-0 fixed flex flex-col items-center max-h-screen">
             {/* Fixed Search Bar */}
             <div className="flex items-center justify-center w-full sm:w-[95%] md:w-[80%] cursor-pointer gap-2 sm:gap-3 md:gap-6 mb-4">
                 {/* Logo (Mobile Only) */}

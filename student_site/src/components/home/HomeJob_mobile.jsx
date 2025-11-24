@@ -138,7 +138,7 @@ const HomeJobMobile = ({ job, isOpen, onClose }) => {
 							animate={{ y: 0 }}
 							exit={{ y: '100%' }}
 							transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-							className="mt-auto h-[92vh] overflow-hidden rounded-t-[20px] border-[3px] border-[#1f1f1f] bg-[#F5F5F5] shadow-[0_-10px_0px_rgba(0,0,0,0.35)]"
+							className="mt-auto h-[85vh] overflow-hidden rounded-t-[20px] border-[3px] border-[#1f1f1f] bg-[#F5F5F5] shadow-[0_-10px_0px_rgba(0,0,0,0.35)]"
 						>
 							<div className="flex h-full flex-col">
 								<div className="flex-1 overflow-y-auto pb-12">
