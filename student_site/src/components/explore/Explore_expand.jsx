@@ -82,7 +82,7 @@ function Explore_expand({ isOpen, onClose, article }) {
             </div>
 
             {/* Custom Animation Keyframes */}
-            <style jsx>{`
+            <style>{`
                 @keyframes slideInBounce {
                     0% {
                         transform: scale(0.3) translateY(-100px) rotate(15deg);
