@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Jobs from "./pages/Jobs";
@@ -9,11 +9,15 @@ import Chat from "./pages/Chat";
 import Navbar from "./components/common/Navbar";
 import Search from "./components/common/Search";
 import SavedJobs from "./pages/SavedJobs";
+import SignUp from "./pages/SignUp";
 
 function App() {
+  const location = useLocation();
+  const isSignUpPage = location.pathname === "/signup";
+
   return (
     <div className="w-screen h-screen overflow-hidden flex items-center gap-4 relative">
-      <Navbar />
+      {!isSignUpPage && <Navbar />}
       <div className="flex-1 h-full relative">
         <Routes>
           {/* Define your routes here */}
@@ -24,9 +28,10 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/saved-jobs" element={<SavedJobs />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>
-      <Search />
+      {!isSignUpPage && <Search />}
     </div>
   );
 }
