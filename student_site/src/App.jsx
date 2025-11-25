@@ -10,10 +10,12 @@ import Navbar from "./components/common/Navbar";
 import Search from "./components/common/Search";
 import SavedJobs from "./pages/SavedJobs";
 import SignUp from "./pages/SignUp";
+import Registration from "./pages/Registration";
 
 function App() {
   const location = useLocation();
-  const isSignUpPage = location.pathname === "/signup";
+  const isSignUpPage =
+    location.pathname === "/signup" || location.pathname === "/registration";
 
   return (
     <div className="w-screen h-screen overflow-hidden flex items-center gap-4 relative">
@@ -29,6 +31,7 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/saved-jobs" element={<SavedJobs />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/registration" element={<Registration />} />
         </Routes>
       </div>
       {!isSignUpPage && <Search />}
