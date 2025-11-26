@@ -177,11 +177,11 @@ function Home() {
       updateAppliedJobs();
     };
 
-    window.addEventListener('jobApplied', handleJobApplied);
+    window.addEventListener("jobApplied", handleJobApplied);
 
     return () => {
       unsubscribe();
-      window.removeEventListener('jobApplied', handleJobApplied);
+      window.removeEventListener("jobApplied", handleJobApplied);
     };
   }, []);
 
@@ -189,7 +189,7 @@ function Home() {
     const rawJobs = flattenJobs(jobDataList);
     return rawJobs
       .map((job, index) => decorateJob(job, index))
-      .filter(job => {
+      .filter((job) => {
         // Check if either the id or title is in appliedJobIds
         const isAppliedById = job.id && appliedJobIds.includes(job.id);
         const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);

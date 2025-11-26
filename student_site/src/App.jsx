@@ -11,11 +11,14 @@ import Search from "./components/common/Search";
 import SavedJobs from "./pages/SavedJobs";
 import SignUp from "./pages/SignUp";
 import Registration from "./pages/Registration";
+import RegistrationSuccess from "./pages/RegistrationSuccess";
 
 function App() {
   const location = useLocation();
   const isSignUpPage =
-    location.pathname === "/signup" || location.pathname === "/registration";
+    location.pathname === "/signup" ||
+    location.pathname === "/registration" ||
+    location.pathname === "/registration-success";
 
   return (
     <div className="w-screen h-screen overflow-hidden flex items-center gap-4 relative">
@@ -32,6 +35,10 @@ function App() {
           <Route path="/saved-jobs" element={<SavedJobs />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/registration" element={<Registration />} />
+          <Route
+            path="/registration-success"
+            element={<RegistrationSuccess />}
+          />
         </Routes>
       </div>
       {!isSignUpPage && <Search />}
