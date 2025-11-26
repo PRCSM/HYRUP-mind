@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import PageReveal from "../components/common/PageReveal";
 import ProgressBar from "../components/Registration/ProgressBar";
 import Step1BasicInfo from "../components/Registration/Step1BasicInfo";
@@ -10,6 +11,7 @@ import Step6Documents from "../components/Registration/Step6Documents";
 import Step7Preview from "../components/Registration/Step7Preview";
 
 function Registration() {
+  const navigate = useNavigate();
   const [showReveal, setShowReveal] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -21,11 +23,10 @@ function Registration() {
     college: "",
     collegeType: "",
     degree: "",
-    year: "",
+    passingYear: "",
     collegeEmail: "",
     // Step 3
     skills: [],
-    preferences: [],
     roles: [],
     // Step 4
     experiences: [
@@ -107,16 +108,17 @@ function Registration() {
       if (!formData.degree) {
         newErrors.degree = "Please select your degree";
       }
-      if (!formData.year) {
-        newErrors.year = "Please select your year";
+      if (!formData.passingYear) {
+        newErrors.passingYear = "Please enter your passing year";
       }
-      if (!formData.collegeEmail) {
-        newErrors.collegeEmail = "College email is required";
-      } else if (!emailRegex.test(formData.collegeEmail)) {
-        newErrors.collegeEmail = "Please enter a valid email address";
-      } else if (formData.collegeEmail === formData.email) {
-        newErrors.collegeEmail =
-          "College email must be different from personal email";
+      // College email is optional - only validate format if provided
+      if (formData.collegeEmail) {
+        if (!emailRegex.test(formData.collegeEmail)) {
+          newErrors.collegeEmail = "Please enter a valid email address";
+        } else if (formData.collegeEmail === formData.email) {
+          newErrors.collegeEmail =
+            "College email must be different from personal email";
+        }
       }
 
       setErrors(newErrors);
@@ -126,14 +128,11 @@ function Registration() {
     if (currentStep === 3) {
       const newErrors = {};
 
-      if (!formData.skills || formData.skills.length === 0) {
-        newErrors.skills = "Please select at least one skill";
+      if (!formData.skills || formData.skills.length < 5) {
+        newErrors.skills = "Please select at least 5 skills";
       }
-      if (!formData.preferences || formData.preferences.length === 0) {
-        newErrors.preferences = "Please select at least one preference";
-      }
-      if (!formData.roles || formData.roles.length === 0) {
-        newErrors.roles = "Please select at least one role";
+      if (!formData.roles || formData.roles.length < 2) {
+        newErrors.roles = "Please select at least 2 roles";
       }
 
       setErrors(newErrors);
@@ -239,8 +238,16 @@ function Registration() {
 
   const handleSubmit = (data) => {
     console.log("Form submitted:", data);
-    alert("Registration successful! 🎉");
-    // Here you would typically send data to your backend
+
+    // Save user data to localStorage for the success page
+    localStorage.setItem("userName", formData.name);
+    localStorage.setItem("userEmail", formData.email);
+    if (formData.profilePicture) {
+      localStorage.setItem("userProfilePic", formData.profilePicture);
+    }
+
+    // Redirect to registration success page
+    navigate("/registration-success");
   };
 
   const renderStep = () => {
@@ -277,7 +284,7 @@ function Registration() {
     }
   };
 
-  const canSkip = currentStep >= 4 && currentStep <= 6;
+  const canSkip = currentStep >= 4 && currentStep <= 5;
 
   return (
     <div className="h-screen overflow-hidden w-screen relative bg-[#FFFAE9]">
