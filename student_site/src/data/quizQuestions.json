@@ -1,0 +1,951 @@
+{
+  "REACT": {
+    "beginner": [
+      {
+        "id": 1,
+        "question": "What is React?",
+        "options": [
+          "A JavaScript library for building user interfaces",
+          "A database management system",
+          "A CSS framework",
+          "A backend framework"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "question": "What is JSX?",
+        "options": [
+          "A JavaScript extension",
+          "A syntax extension for JavaScript",
+          "A CSS preprocessor",
+          "A database query language"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 3,
+        "question": "Which method is used to create components in React?",
+        "options": [
+          "React.createComponent()",
+          "React.component()",
+          "React.createElement()",
+          "React.makeComponent()"
+        ],
+        "correctAnswer": 2
+      },
+      {
+        "id": 4,
+        "question": "What is the virtual DOM?",
+        "options": [
+          "A copy of the real DOM",
+          "A lightweight representation of the DOM",
+          "A database",
+          "A CSS framework"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 5,
+        "question": "What are props in React?",
+        "options": [
+          "Properties passed to components",
+          "CSS styles",
+          "Database connections",
+          "API endpoints"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 6,
+        "question": "What is state in React?",
+        "options": [
+          "A CSS property",
+          "An object that holds component data",
+          "A routing mechanism",
+          "A database"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 7,
+        "question": "Which hook is used to manage state in functional components?",
+        "options": ["useEffect", "useState", "useContext", "useReducer"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 8,
+        "question": "What is the purpose of useEffect hook?",
+        "options": [
+          "To manage state",
+          "To perform side effects",
+          "To create components",
+          "To style components"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 9,
+        "question": "How do you pass data from parent to child component?",
+        "options": [
+          "Using state",
+          "Using props",
+          "Using context",
+          "Using refs"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 10,
+        "question": "What is the correct way to update state?",
+        "options": [
+          "this.state = newValue",
+          "setState(newValue)",
+          "state = newValue",
+          "updateState(newValue)"
+        ],
+        "correctAnswer": 1
+      }
+    ],
+    "intermediate": [
+      {
+        "id": 1,
+        "question": "What is React Context API used for?",
+        "options": [
+          "Styling components",
+          "Managing global state",
+          "Routing",
+          "API calls"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 2,
+        "question": "What is the purpose of useCallback hook?",
+        "options": [
+          "To memoize functions",
+          "To manage state",
+          "To perform side effects",
+          "To create refs"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 3,
+        "question": "What is React.memo() used for?",
+        "options": [
+          "To create components",
+          "To optimize performance by memoizing components",
+          "To manage state",
+          "To handle events"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "question": "What is the difference between controlled and uncontrolled components?",
+        "options": [
+          "Controlled components manage their own state",
+          "Uncontrolled components use React state",
+          "Controlled components have their state managed by React",
+          "There is no difference"
+        ],
+        "correctAnswer": 2
+      },
+      {
+        "id": 5,
+        "question": "What is the purpose of useReducer hook?",
+        "options": [
+          "To reduce bundle size",
+          "To manage complex state logic",
+          "To perform API calls",
+          "To style components"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 6,
+        "question": "What are Higher Order Components (HOC)?",
+        "options": [
+          "Components that return other components",
+          "Functions that take a component and return a new component",
+          "Components with higher priority",
+          "Parent components"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 7,
+        "question": "What is the purpose of useRef hook?",
+        "options": [
+          "To manage state",
+          "To access DOM elements directly",
+          "To perform side effects",
+          "To create context"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 8,
+        "question": "What is lazy loading in React?",
+        "options": [
+          "Loading components slowly",
+          "Loading components only when needed",
+          "Loading all components at once",
+          "A CSS technique"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 9,
+        "question": "What is the purpose of React.Fragment?",
+        "options": [
+          "To group elements without adding extra nodes to the DOM",
+          "To create fragments of code",
+          "To split components",
+          "To handle errors"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 10,
+        "question": "What is prop drilling?",
+        "options": [
+          "Passing props through multiple levels of components",
+          "Creating holes in props",
+          "Removing props",
+          "A debugging technique"
+        ],
+        "correctAnswer": 0
+      }
+    ],
+    "advance": [
+      {
+        "id": 1,
+        "question": "What is React Fiber?",
+        "options": [
+          "A CSS framework",
+          "React's reconciliation algorithm",
+          "A state management library",
+          "A routing library"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 2,
+        "question": "What is the purpose of Concurrent Mode in React?",
+        "options": [
+          "To run multiple apps simultaneously",
+          "To help React apps stay responsive by rendering component trees without blocking the main thread",
+          "To manage state concurrently",
+          "To handle concurrent API calls"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 3,
+        "question": "What is Suspense in React?",
+        "options": [
+          "A way to pause component rendering",
+          "A component that lets you wait for code to load",
+          "A state management tool",
+          "An error boundary"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "question": "What is the purpose of Error Boundaries?",
+        "options": [
+          "To prevent errors",
+          "To catch JavaScript errors in component tree and display fallback UI",
+          "To validate props",
+          "To handle API errors"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 5,
+        "question": "What is Server-Side Rendering (SSR) in React?",
+        "options": [
+          "Rendering components on the server",
+          "Rendering components on the client",
+          "A database technique",
+          "A CSS technique"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 6,
+        "question": "What is the purpose of useImperativeHandle hook?",
+        "options": [
+          "To customize the instance value exposed to parent components when using ref",
+          "To manage state imperatively",
+          "To perform side effects",
+          "To create context"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 7,
+        "question": "What is React's reconciliation process?",
+        "options": [
+          "The process of comparing virtual DOM with real DOM",
+          "The process of updating state",
+          "The process of handling events",
+          "The process of routing"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 8,
+        "question": "What are Portals in React?",
+        "options": [
+          "A way to render children into a DOM node outside the parent component's DOM hierarchy",
+          "A routing mechanism",
+          "A state management tool",
+          "A CSS technique"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 9,
+        "question": "What is the purpose of useLayoutEffect?",
+        "options": [
+          "To style components",
+          "To perform side effects synchronously after all DOM mutations",
+          "To manage layout state",
+          "To create layouts"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 10,
+        "question": "What is code splitting in React?",
+        "options": [
+          "Splitting code into multiple files",
+          "A technique to split your bundle into smaller chunks loaded on demand",
+          "Splitting components into smaller parts",
+          "A debugging technique"
+        ],
+        "correctAnswer": 1
+      }
+    ]
+  },
+  "JAVASCRIPT": {
+    "beginner": [
+      {
+        "id": 1,
+        "question": "What is JavaScript?",
+        "options": [
+          "A programming language",
+          "A markup language",
+          "A database",
+          "A CSS framework"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "question": "Which keyword is used to declare a variable in JavaScript?",
+        "options": ["var", "let", "const", "All of the above"],
+        "correctAnswer": 3
+      },
+      {
+        "id": 3,
+        "question": "What is the correct way to write a comment in JavaScript?",
+        "options": [
+          "<!-- This is a comment -->",
+          "// This is a comment",
+          "/* This is a comment */",
+          "Both B and C"
+        ],
+        "correctAnswer": 3
+      },
+      {
+        "id": 4,
+        "question": "What is the output of typeof null?",
+        "options": ["null", "undefined", "object", "number"],
+        "correctAnswer": 2
+      },
+      {
+        "id": 5,
+        "question": "Which method is used to add an element at the end of an array?",
+        "options": ["push()", "pop()", "shift()", "unshift()"],
+        "correctAnswer": 0
+      },
+      {
+        "id": 6,
+        "question": "What is the correct syntax for a for loop?",
+        "options": [
+          "for (i = 0; i < 5; i++)",
+          "for i = 0 to 5",
+          "for (i = 0; i < 5)",
+          "loop (i = 0; i < 5; i++)"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 7,
+        "question": "What does === operator do?",
+        "options": [
+          "Compares values only",
+          "Compares values and types",
+          "Assigns a value",
+          "None of the above"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 8,
+        "question": "Which method converts a string to lowercase?",
+        "options": ["toLowerCase()", "toLower()", "lower()", "lowerCase()"],
+        "correctAnswer": 0
+      },
+      {
+        "id": 9,
+        "question": "What is the purpose of the return statement?",
+        "options": [
+          "To exit a function",
+          "To return a value from a function",
+          "Both A and B",
+          "None of the above"
+        ],
+        "correctAnswer": 2
+      },
+      {
+        "id": 10,
+        "question": "Which method is used to combine two or more arrays?",
+        "options": ["concat()", "join()", "merge()", "combine()"],
+        "correctAnswer": 0
+      }
+    ],
+    "intermediate": [
+      {
+        "id": 1,
+        "question": "What is a closure in JavaScript?",
+        "options": [
+          "A function that has access to its outer function's variables",
+          "A way to close a function",
+          "A type of loop",
+          "A CSS property"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "question": "What is the difference between let and var?",
+        "options": [
+          "let is block-scoped, var is function-scoped",
+          "var is block-scoped, let is function-scoped",
+          "There is no difference",
+          "let cannot be reassigned"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 3,
+        "question": "What is the purpose of the map() method?",
+        "options": [
+          "To create a new array with the results of calling a function on every element",
+          "To filter an array",
+          "To reduce an array to a single value",
+          "To sort an array"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 4,
+        "question": "What is event bubbling?",
+        "options": [
+          "Events propagating from child to parent elements",
+          "Events propagating from parent to child elements",
+          "Creating bubble animations",
+          "A CSS effect"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 5,
+        "question": "What is the purpose of Promise in JavaScript?",
+        "options": [
+          "To handle asynchronous operations",
+          "To create animations",
+          "To style elements",
+          "To validate data"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 6,
+        "question": "What does the spread operator (...) do?",
+        "options": [
+          "Spreads elements of an iterable",
+          "Creates a range",
+          "Multiplies numbers",
+          "Divides arrays"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 7,
+        "question": "What is destructuring in JavaScript?",
+        "options": [
+          "Breaking down code",
+          "Extracting values from arrays or objects into variables",
+          "Destroying variables",
+          "A debugging technique"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 8,
+        "question": "What is the purpose of async/await?",
+        "options": [
+          "To make asynchronous code look synchronous",
+          "To create animations",
+          "To handle errors",
+          "To optimize performance"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 9,
+        "question": "What is the difference between == and ===?",
+        "options": [
+          "== compares values, === compares values and types",
+          "=== compares values, == compares values and types",
+          "There is no difference",
+          "== is faster than ==="
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 10,
+        "question": "What is the purpose of the filter() method?",
+        "options": [
+          "To create a new array with elements that pass a test",
+          "To modify existing array",
+          "To sort an array",
+          "To reverse an array"
+        ],
+        "correctAnswer": 0
+      }
+    ],
+    "advance": [
+      {
+        "id": 1,
+        "question": "What is the Event Loop in JavaScript?",
+        "options": [
+          "A loop that handles events",
+          "A mechanism that handles asynchronous callbacks",
+          "A type of for loop",
+          "A CSS animation"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 2,
+        "question": "What is a WeakMap in JavaScript?",
+        "options": [
+          "A map with weak keys that can be garbage collected",
+          "A map with limited functionality",
+          "A small map",
+          "A deprecated feature"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 3,
+        "question": "What is the purpose of Proxy in JavaScript?",
+        "options": [
+          "To create a proxy server",
+          "To define custom behavior for fundamental operations",
+          "To handle network requests",
+          "To optimize performance"
+        ],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "question": "What is tail call optimization?",
+        "options": [
+          "Optimizing the last function call in a recursive function",
+          "Optimizing array operations",
+          "A CSS technique",
+          "A debugging tool"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 5,
+        "question": "What is the purpose of Symbol in JavaScript?",
+        "options": [
+          "To create unique identifiers",
+          "To create symbols for CSS",
+          "To handle mathematical operations",
+          "To create animations"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 6,
+        "question": "What is a Generator function?",
+        "options": [
+          "A function that can be paused and resumed",
+          "A function that generates random numbers",
+          "A function that creates components",
+          "A function that optimizes code"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 7,
+        "question": "What is the purpose of Reflect API?",
+        "options": [
+          "To provide methods for interceptable JavaScript operations",
+          "To create reflections in CSS",
+          "To debug code",
+          "To optimize performance"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 8,
+        "question": "What is memoization?",
+        "options": [
+          "Caching function results to optimize performance",
+          "Memorizing code",
+          "A debugging technique",
+          "A CSS optimization"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 9,
+        "question": "What is the difference between call, apply, and bind?",
+        "options": [
+          "They all set the 'this' context differently",
+          "There is no difference",
+          "They are deprecated",
+          "They handle errors differently"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 10,
+        "question": "What is the purpose of Object.freeze()?",
+        "options": [
+          "To make an object immutable",
+          "To stop object execution",
+          "To optimize object performance",
+          "To serialize an object"
+        ],
+        "correctAnswer": 0
+      }
+    ]
+  },
+  "PYTHON": {
+    "beginner": [
+      {
+        "id": 1,
+        "question": "What is Python?",
+        "options": [
+          "A high-level programming language",
+          "A snake species",
+          "A database",
+          "A web browser"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "question": "Which keyword is used to define a function in Python?",
+        "options": ["function", "def", "func", "define"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 3,
+        "question": "What is the correct file extension for Python files?",
+        "options": [".python", ".py", ".pt", ".pyt"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 4,
+        "question": "Which of the following is used to comment in Python?",
+        "options": ["//", "#", "/* */", "<!--  -->"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 5,
+        "question": "What is the output of print(type([]))?",
+        "options": [
+          "<class 'list'>",
+          "<class 'array'>",
+          "<class 'tuple'>",
+          "<class 'dict'>"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 6,
+        "question": "Which method is used to add an element to a list?",
+        "options": ["add()", "append()", "insert()", "push()"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 7,
+        "question": "What is the correct way to create a dictionary?",
+        "options": ["dict = []", "dict = {}", "dict = ()", "dict = <>"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 8,
+        "question": "Which operator is used for exponentiation?",
+        "options": ["^", "**", "exp", "pow"],
+        "correctAnswer": 1
+      },
+      {
+        "id": 9,
+        "question": "What is the purpose of the len() function?",
+        "options": [
+          "To get the length of an object",
+          "To create a list",
+          "To sort a list",
+          "To reverse a list"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 10,
+        "question": "Which keyword is used for conditional statements?",
+        "options": ["if", "when", "condition", "check"],
+        "correctAnswer": 0
+      }
+    ],
+    "intermediate": [
+      {
+        "id": 1,
+        "question": "What is a lambda function?",
+        "options": [
+          "An anonymous function",
+          "A named function",
+          "A class method",
+          "A decorator"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "question": "What is list comprehension?",
+        "options": [
+          "A concise way to create lists",
+          "A way to compress lists",
+          "A debugging tool",
+          "A sorting algorithm"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 3,
+        "question": "What is the purpose of *args in function parameters?",
+        "options": [
+          "To pass variable number of arguments",
+          "To multiply arguments",
+          "To create pointers",
+          "To handle errors"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 4,
+        "question": "What is a decorator in Python?",
+        "options": [
+          "A function that modifies another function",
+          "A CSS styling tool",
+          "A debugging tool",
+          "A type of loop"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 5,
+        "question": "What is the difference between append() and extend()?",
+        "options": [
+          "append() adds single element, extend() adds multiple elements",
+          "extend() adds single element, append() adds multiple elements",
+          "There is no difference",
+          "append() is faster"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 6,
+        "question": "What is a generator in Python?",
+        "options": [
+          "A function that returns an iterator",
+          "A random number generator",
+          "A code generator",
+          "A testing tool"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 7,
+        "question": "What is the purpose of __init__ method?",
+        "options": [
+          "To initialize class attributes",
+          "To delete objects",
+          "To create functions",
+          "To handle errors"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 8,
+        "question": "What is the difference between is and ==?",
+        "options": [
+          "is checks identity, == checks equality",
+          "== checks identity, is checks equality",
+          "There is no difference",
+          "is is faster"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 9,
+        "question": "What is a context manager?",
+        "options": [
+          "An object that manages resources using with statement",
+          "A project manager",
+          "A debugging tool",
+          "A testing framework"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 10,
+        "question": "What is the purpose of the zip() function?",
+        "options": [
+          "To combine multiple iterables",
+          "To compress files",
+          "To sort lists",
+          "To filter data"
+        ],
+        "correctAnswer": 0
+      }
+    ],
+    "advance": [
+      {
+        "id": 1,
+        "question": "What is the Global Interpreter Lock (GIL)?",
+        "options": [
+          "A mutex that protects access to Python objects",
+          "A global variable",
+          "A security feature",
+          "A debugging tool"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 2,
+        "question": "What is metaclass in Python?",
+        "options": [
+          "A class of a class",
+          "A parent class",
+          "A child class",
+          "An abstract class"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 3,
+        "question": "What is the purpose of __slots__?",
+        "options": [
+          "To restrict dynamic attribute creation and save memory",
+          "To create time slots",
+          "To handle errors",
+          "To optimize loops"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 4,
+        "question": "What is monkey patching?",
+        "options": [
+          "Dynamically modifying a class or module at runtime",
+          "A debugging technique",
+          "A testing method",
+          "A security feature"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 5,
+        "question": "What is the purpose of asyncio?",
+        "options": [
+          "To write asynchronous code",
+          "To handle I/O operations",
+          "To optimize performance",
+          "All of the above"
+        ],
+        "correctAnswer": 3
+      },
+      {
+        "id": 6,
+        "question": "What is the difference between deepcopy and shallow copy?",
+        "options": [
+          "deepcopy creates independent copy, shallow copy creates reference",
+          "shallow copy creates independent copy, deepcopy creates reference",
+          "There is no difference",
+          "deepcopy is faster"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 7,
+        "question": "What is the purpose of __new__ method?",
+        "options": [
+          "To create a new instance of a class",
+          "To initialize attributes",
+          "To delete objects",
+          "To handle errors"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 8,
+        "question": "What is a descriptor in Python?",
+        "options": [
+          "An object that defines __get__, __set__, or __delete__ methods",
+          "A documentation string",
+          "A debugging tool",
+          "A type of decorator"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 9,
+        "question": "What is the purpose of functools.lru_cache?",
+        "options": [
+          "To cache function results for optimization",
+          "To clear cache",
+          "To create caches",
+          "To debug functions"
+        ],
+        "correctAnswer": 0
+      },
+      {
+        "id": 10,
+        "question": "What is the difference between staticmethod and classmethod?",
+        "options": [
+          "staticmethod doesn't receive implicit first argument, classmethod receives cls",
+          "classmethod doesn't receive implicit first argument, staticmethod receives cls",
+          "There is no difference",
+          "staticmethod is faster"
+        ],
+        "correctAnswer": 0
+      }
+    ]
+  }
+}

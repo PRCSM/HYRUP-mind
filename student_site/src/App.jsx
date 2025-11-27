@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import ProfileEdit from "./pages/ProfileEdit";
+import VerifySkill from "./pages/VerifySkill";
 import Jobs from "./pages/Jobs";
 import Explore from "./pages/Explore";
 import Settings from "./pages/Settings";
@@ -28,6 +30,8 @@ function App() {
           {/* Define your routes here */}
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile-edit" element={<ProfileEdit />} />
+          <Route path="/verify-skill" element={<VerifySkill />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/settings" element={<Settings />} />
