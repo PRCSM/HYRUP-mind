@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Home_card from './Home_card';
-import jobDataList from '../../demodata/demodata.json';
+// import jobDataList from '../../demodata/demodata.json';
 import { AnimatePresence, motion } from 'framer-motion';
 import jobStore from '../../utils/jobStore';
 
-export default function Home_cards() {
+export default function Home_cards( { jobs = [] }) {
   const [cards, setCards] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [appliedJobIds, setAppliedJobIds] = useState([]);
+
   // To track exit direction for animation (up or down)
   const [exitY, setExitY] = useState(0); 
     const CARD_COLORS = ['#E3FEAA', '#B8D1E6', '#E6D3FC'];
@@ -39,30 +40,41 @@ export default function Home_cards() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!jobDataList) return;
+  useEffect(()=>{
+    if (!jobs || !Array.isArray(jobs)) return ;
+     const filtered = jobs.filter(job => {
+    const isAppliedById = appliedJobIds.includes(job.id);
+    const isAppliedByTitle = appliedJobIds.includes(job.title);
+    return !isAppliedById && !isAppliedByTitle;
+  });
+    setCards(filtered);
+  setCurrentIndex(0);
+  },[jobs,appliedJobIds])
 
-    const sourceArray = Array.isArray(jobDataList)
-      ? jobDataList
-      : [
-          ...(Array.isArray(jobDataList.companyJobs) ? jobDataList.companyJobs : []),
-          ...(Array.isArray(jobDataList.onCampusJobs) ? jobDataList.onCampusJobs : []),
-        ];
+  // useEffect(() => {
+  //   if (!jobDataList) return;
 
-    // Filter out applied jobs
-    const filteredJobs = sourceArray.filter(job => {
-      const isAppliedById = job.id && appliedJobIds.includes(job.id);
-      const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
-      return !isAppliedById && !isAppliedByTitle;
-    });
+  //   const sourceArray = Array.isArray(jobDataList)
+  //     ? jobDataList
+  //     : [
+  //         ...(Array.isArray(jobDataList.companyJobs) ? jobDataList.companyJobs : []),
+  //         ...(Array.isArray(jobDataList.onCampusJobs) ? jobDataList.onCampusJobs : []),
+  //       ];
 
-    const normalizedCards = filteredJobs.map((job, index) => ({
-      id: job?.id ?? `job-${index}`,
-      ...job,
-    }));
+  //   // Filter out applied jobs
+  //   const filteredJobs = sourceArray.filter(job => {
+  //     const isAppliedById = job.id && appliedJobIds.includes(job.id);
+  //     const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
+  //     return !isAppliedById && !isAppliedByTitle;
+  //   });
 
-    setCards(normalizedCards);
-  }, [appliedJobIds]);
+  //   const normalizedCards = filteredJobs.map((job, index) => ({
+  //     id: job?.id ?? job?._id ?? `job-${index}`,
+  //     ...job,
+  //   }));
+
+  //   setCards(normalizedCards);
+  // }, [appliedJobIds]);
 
   // Updated to handle 'up' (apply) or 'down' (reject) directions
   const removeCard = (direction) => {
@@ -83,10 +95,12 @@ export default function Home_cards() {
     removeCard('up'); // 'up' for apply
   };
 
-  if (cards.length === 0) {
+  // if (cards.length === 0) {
+  //     return <div className="w-full h-full flex items-center justify-center font-['Inter'] text-xl font-bold text-gray-500">Loading Jobs...</div>;
+  // }
+    if (!cards.length ) {
       return <div className="w-full h-full flex items-center justify-center font-['Inter'] text-xl font-bold text-gray-500">Loading Jobs...</div>;
   }
-
   if (currentIndex >= cards.length) {
       return (
           <div className="w-full h-full flex flex-col items-center justify-center font-['Inter'] text-gray-700 space-y-4">

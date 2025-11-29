@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import apiService from "../../services/apiService";
 import ProfileHeader from '../components/profile/ProfileHeader';
 import Education from '../components/profile/Education';
 import Skills from '../components/profile/Skills';
@@ -7,6 +8,64 @@ import Experience from '../components/profile/Experience';
 import Projects from '../components/profile/Projects';
 
 function Profile() {
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const normalizeProfile = (data) => ({
+  fullName: data.profile?.FullName || "",
+  profilePicture: data.profile?.profilePicture || "",
+  bio: data.profile?.bio || "",
+  about: data.profile?.about || "",
+
+  education: {
+    college: data.education?.college || "",
+    degree: data.education?.degree || "",
+    year: data.education?.yearOfPassing || "",
+    collegeEmail: data.education?.collegeEmail || "",
+  },
+
+  skills: Object.keys(data.user_skills || {}),
+
+  preferences: data.job_preference || [],
+
+  experience: (data.experience || []).map(exp => ({
+    organization: exp.nameOfOrg,
+    position: exp.position,
+    timeline: exp.timeline,
+    description: exp.description
+  })),
+
+  projects: (data.projects || []).map(p => ({
+    name: p.projectName,
+    link: p.link,
+    description: p.description
+  }))
+});
+
+    useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const data = await apiService.getStudentDetails();
+      console.log("PROFILE DATA:", data);
+      setProfile(normalizeProfile(response.user));
+    } catch (err) {
+      console.error("Profile fetch failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProfile();
+}, []);
+
+
+    if (loading) {
+  return (
+    <div className='w-full flex justify-center items-center pt-20 text-xl font-bold'>
+      Loading profile...
+    </div>
+  );
+}
+
     return (
         <div className='w-full h-full flex gap-10 items-center justify-center pt-16'>
             <div className='w-[95%] md:w-[90%] h-[95%] md:h-[89%] bg-[#efebe0] rounded-[10px] border-2 sm:border-4 border-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] overflow-auto custom-scroll p-4 md:p-6'>
@@ -19,44 +78,44 @@ function Profile() {
                     <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-[250px_1fr] gap-4 md:gap-6">
                         {/* Education */}
                         <div className="md:hidden">
-                            <Education />
+                            <Education education={profile.education}/>
                         </div>
 
                         {/* Skills */}
                         <div className="md:hidden">
-                            <Skills />
+                            <Skills skills={profile.skills}/>
                         </div>
 
                         {/* Job Preference */}
                         <div className="md:hidden">
-                            <JobPreference />
+                            <JobPreference preferences={profile.preferences}/>
                         </div>
 
                         {/* Experience */}
                         <div className="md:hidden">
-                            <Experience />
+                            <Experience experiences={profile.experience} />
                         </div>
 
                         {/* Projects */}
                         <div className="md:hidden">
-                            <Projects />
+                            <Projects projects={profile.projects} />
                         </div>
 
                         {/* Desktop Layout */}
                         <div className="hidden md:block space-y-6">
-                            <Education />
-                            <JobPreference />
+                            <Education education={profile.education}/>
+                            <JobPreference preferences={profile.preferences} />
                         </div>
 
                         <div className="hidden md:block space-y-6">
-                            <Skills />
-                            <Experience />
+                            <Skills skills={profile.skills}/>
+                            <Experience experience={profile.experience}/>
                         </div>
                     </div>
 
                     {/* Projects Section - Full Width on Desktop */}
                     <div className="hidden md:block">
-                        <Projects />
+                        <Projects projects={profile.projects}/>
                     </div>
                 </div>
             </div>

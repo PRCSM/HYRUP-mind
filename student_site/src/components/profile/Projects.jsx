@@ -1,26 +1,35 @@
 import React from 'react';
 
-function Projects() {
-  const projects = [
-    {
-      name: 'MaxWells Coperations',
-      link: 'https://amxa.com/pro1',
-      description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
-    },
-    {
-      name: 'MaxWells Coperations',
-      link: 'https://amxa.com/pro1',
-      description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
-    },
-  ];
+function Projects({projects = []}) {
+  // const projects = [
+  //   {
+  //     name: 'MaxWells Coperations',
+  //     link: 'https://amxa.com/pro1',
+  //     description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
+  //   },
+  //   {
+  //     name: 'MaxWells Coperations',
+  //     link: 'https://amxa.com/pro1',
+  //     description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
+  //   },
+  // ];
+
+  if (projects.length === 0 ){
+       return (
+         <p className="text-gray-500 text-sm italic px-2">
+          No projects added yet.
+        </p>
+       );
+}
 
   return (
     <div className="bg-[#FFFAE9] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] p-4 md:p-6">
       <div className="bg-[#FFF59D] inline-block px-4 py-1 rounded-[5px] border-2 border-black mb-4">
         <h2 className="text-lg md:text-[24px] font-[Jost-Bold] text-black">Projects</h2>
       </div>
-
+    
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
         {projects.map((project, index) => (
           <div
             key={index}

@@ -1,20 +1,20 @@
 import React from 'react';
 
-function Experience() {
-  const experiences = [
-    {
-      organization: 'MaxWells Coperations',
-      position: 'AI Intern',
-      timeline: 'Jan 2025 - Feb 2025',
-      description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
-    },
-    {
-      organization: 'MaxWells Coperations',
-      position: 'AI Intern',
-      timeline: 'Jan 2025 - Feb 2025',
-      description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
-    },
-  ];
+function Experience({ experiences = [] }) {
+  // const experiences = [
+  //   {
+  //     organization: 'MaxWells Coperations',
+  //     position: 'AI Intern',
+  //     timeline: 'Jan 2025 - Feb 2025',
+  //     description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
+  //   },
+  //   {
+  //     organization: 'MaxWells Coperations',
+  //     position: 'AI Intern',
+  //     timeline: 'Jan 2025 - Feb 2025',
+  //     description: 'Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search',
+  //   },
+  // ];
 
   return (
     <div className="bg-[#FFFAE9] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] p-4 md:p-6">

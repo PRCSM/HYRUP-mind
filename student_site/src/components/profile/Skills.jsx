@@ -1,22 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function Skills() {
+function Skills({skills}) {
   const navigate = useNavigate();
 
   const handleVerifySkills = () => {
     navigate("/verify-skill");
   };
 
-  const skills = [
-    { name: "ADOBE", color: "bg-[#FFD54F]" },
-    { name: "REACT", color: "bg-white" },
-    { name: "FLUTTER", color: "bg-[#96E7E5]" },
-    { name: "FIGMA", color: "bg-[#40FFB9]" },
-    { name: "TENSOR FLOW", color: "bg-white" },
-    { name: "FIGMA", color: "bg-[#40FFB9]" },
-    { name: "TENSOR FLOW", color: "bg-white" },
-  ];
+  // const skills = [
+  //   { name: "ADOBE", color: "bg-[#FFD54F]" },
+  //   { name: "REACT", color: "bg-white" },
+  //   { name: "FLUTTER", color: "bg-[#96E7E5]" },
+  //   { name: "FIGMA", color: "bg-[#40FFB9]" },
+  //   { name: "TENSOR FLOW", color: "bg-white" },
+  //   { name: "FIGMA", color: "bg-[#40FFB9]" },
+  //   { name: "TENSOR FLOW", color: "bg-white" },
+  // ];
 
   return (
     <div className="bg-[#FFFAE9] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] p-4 md:p-6">
@@ -36,7 +36,29 @@ function Skills() {
         </button>
       </div>
       <div className="flex flex-wrap justify-start px-0 md:px-8 items-center gap-3">
-        {skills.map((skill, index) => (
+
+                {Object.entries(skills || {}).map(([name, data], index) => {
+          const level = data?.level || "unverified";
+          const colors = {
+            unverified: "bg-[#F2DEBA]",
+            beginner: "bg-[#40FFB9]",
+            intermediate: "bg-[#96E7E5]",
+            advance: "bg-[#FFD54F]",
+          };
+              return(
+                <div
+            key={index}
+            className={`${colors[level]} px-5 py-2 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)]`}
+          >
+            <span className="text-sm font-[Jost-Bold] text-[#00BCD4]">
+              {name.toUpperCase()}
+            </span>
+          </div>
+              )
+            }
+          )
+        }
+                 {/* {skills.map((skill, index) => (
           <div
             key={index}
             className={`${skill.color} px-5 py-2 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)]`}
@@ -45,7 +67,9 @@ function Skills() {
               {skill.name}
             </span>
           </div>
-        ))}
+        ))} */}   
+
+
       </div>
     </div>
   );
