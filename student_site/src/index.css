@@ -3,18 +3,22 @@
 @font-face {
   font-family: jost-regular;
   src: url(../public/fonts/Jost/Jost-Regular.ttf);
+  font-display: swap;
 }
 @font-face {
   font-family: jost-medium;
   src: url(../public/fonts/Jost/Jost-Medium.ttf);
+  font-display: swap;
 }
 @font-face {
   font-family: jost-semibold;
   src: url(../public/fonts/Jost/Jost-SemiBold.ttf);
+  font-display: swap;
 }
 @font-face {
   font-family: jost-bold;
   src: url(../public/fonts/Jost/Jost-Bold.ttf);
+  font-display: swap;
 }
 body {
   font-family: jost-regular, sans-serif;
@@ -26,14 +30,17 @@ body {
 @font-face {
   font-family: inter-bold;
   src: url(../public/fonts/Inter/Inter_24pt-Bold.ttf);
+  font-display: swap;
 }
 @font-face {
   font-family: inter-regular;
   src: url(../public/fonts/Inter/Inter_18pt-Regular.ttf);
+  font-display: swap;
 }
 @font-face {
   font-family: inter-extra;
   src: url(../public/fonts/Inter/Inter_24pt-ExtraBold.ttf);
+  font-display: swap;
 }
 
 .custom-scroll {

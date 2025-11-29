@@ -114,6 +114,8 @@ function Chat_Area({ selectedChat, setSelectedChatId }) {
         <img
           src={file.url}
           alt={file.name}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
           draggable={false}
         />

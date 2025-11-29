@@ -9,6 +9,8 @@ const MasonryCard = ({ image, title, onClick }) => {
             <img 
                 src={image || 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=600'} 
                 alt={title} 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto object-cover"
                 onError={(e) => {
                     e.target.src = 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=600';

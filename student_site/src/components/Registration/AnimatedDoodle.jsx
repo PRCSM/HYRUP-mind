@@ -6,6 +6,8 @@ function AnimatedDoodle({ src, alt, className = "" }) {
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         className="w-full h-full object-contain animate-float"
       />
     </div>

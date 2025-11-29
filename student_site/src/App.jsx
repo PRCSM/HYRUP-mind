@@ -1,19 +1,28 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import ProfileEdit from "./pages/ProfileEdit";
-import VerifySkill from "./pages/VerifySkill";
-import Jobs from "./pages/Jobs";
-import Explore from "./pages/Explore";
-import Settings from "./pages/Settings";
-import Chat from "./pages/Chat";
 import Navbar from "./components/common/Navbar";
 import Search from "./components/common/Search";
-import SavedJobs from "./pages/SavedJobs";
-import SignUp from "./pages/SignUp";
-import Registration from "./pages/Registration";
-import RegistrationSuccess from "./pages/RegistrationSuccess";
+
+// Lazy load all pages for code splitting
+const Home = lazy(() => import("./pages/Home"));
+const Profile = lazy(() => import("./pages/Profile"));
+const ProfileEdit = lazy(() => import("./pages/ProfileEdit"));
+const VerifySkill = lazy(() => import("./pages/VerifySkill"));
+const Jobs = lazy(() => import("./pages/Jobs"));
+const Explore = lazy(() => import("./pages/Explore"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Chat = lazy(() => import("./pages/Chat"));
+const SavedJobs = lazy(() => import("./pages/SavedJobs"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+const Registration = lazy(() => import("./pages/Registration"));
+const RegistrationSuccess = lazy(() => import("./pages/RegistrationSuccess"));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="w-full h-full flex items-center justify-center bg-[#FFFAE9]">
+    <div className="animate-pulse text-2xl font-[jost-bold] text-amber-600">Loading...</div>
+  </div>
+);
 
 function App() {
   const location = useLocation();
@@ -26,9 +35,10 @@ function App() {
     <div className="w-screen h-screen overflow-hidden flex items-center gap-4 relative">
       {!isSignUpPage && <Navbar />}
       <div className="flex-1 h-full relative">
-        <Routes>
-          {/* Define your routes here */}
-          <Route path="/" element={<Home />} />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {/* Define your routes here */}
+            <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile-edit" element={<ProfileEdit />} />
           <Route path="/verify-skill" element={<VerifySkill />} />
@@ -43,7 +53,8 @@ function App() {
             path="/registration-success"
             element={<RegistrationSuccess />}
           />
-        </Routes>
+          </Routes>
+        </Suspense>
       </div>
       {!isSignUpPage && <Search />}
     </div>
