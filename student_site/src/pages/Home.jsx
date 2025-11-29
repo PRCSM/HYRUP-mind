@@ -2,8 +2,10 @@ import React, { useCallback, useMemo, useState } from "react";
 import Home_cards from "../components/home/Home_cards";
 import HomeCardMobile from "../components/home/Home_card_mobile";
 import HomeJobMobile from "../components/home/HomeJob_mobile";
-import jobDataList from "../demodata/demodata.json";
+import apiService from "../../services/apiService";
+// import jobDataList from "../demodata/demodata.json";
 import jobStore from "../utils/jobStore";
+import { useAuth } from "../hooks/useAuth";
 
 const COLOR_PALETTE = [
   { primary: "#3B1FFF", secondary: "#25138E", detail: "#FF8A65" },
@@ -123,7 +125,7 @@ const decorateJob = (job, index) => {
   return {
     ...job,
     id:
-      job.id ??
+      job.id ?? job._id ?? 
       `${(job.title || "job")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")}-${index}`,
@@ -157,6 +159,49 @@ const flattenJobs = (data) => {
 function Home() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [appliedJobIds, setAppliedJobIds] = useState([]);
+  const [jobDataList, setJobDataList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
+
+  // React.useEffect(()=>{
+  //   if (!currentUser) return;
+  //   const fetchJobs=async ()=>{
+  //     try {
+  //       setLoading(true);
+  //       const response = await apiService.getStudentJobs();
+  //       setJobDataList(response?.data || response || []);
+  //     } catch (error) {
+  //       setJobDataList([]);
+  //     }
+  //     finally{
+  //       setLoading(false);
+  //     }
+  //   }
+
+  //   fetchJobs()
+  // },[currentUser])
+  React.useEffect(() => {
+  const fetchJobs = async () => {
+    if (!currentUser) return; 
+    
+    const token = await currentUser.getIdToken();
+    if (!token) return;  // wait until token exists
+
+    console.log("FETCHING JOBS WITH TOKEN:", token);
+    
+    try {
+      const response = await apiService.getStudentJobs();
+      setJobDataList(response?.data || response || []);
+    } catch (err) {
+      console.error("Job fetch error:", err);
+    }
+  };
+
+  // Delay slightly to ensure Firebase refresh finished
+  const timeout = setTimeout(fetchJobs, 300);
+
+  return () => clearTimeout(timeout);
+}, [currentUser]);
 
   // Load applied jobs to filter them out
   React.useEffect(() => {
@@ -185,17 +230,29 @@ function Home() {
     };
   }, []);
 
+  // const jobs = useMemo(() => {
+  //   const rawJobs = flattenJobs(jobDataList);
+  //   return rawJobs
+  //     .map((job, index) => decorateJob(job, index))
+  //     .filter((job) => {
+  //       // Check if either the id or title is in appliedJobIds
+  //       const isAppliedById = job.id && appliedJobIds.includes(job.id);
+  //       const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
+  //       return !isAppliedById && !isAppliedByTitle;
+  //     });
+  // }, [appliedJobIds]);
   const jobs = useMemo(() => {
-    const rawJobs = flattenJobs(jobDataList);
-    return rawJobs
-      .map((job, index) => decorateJob(job, index))
-      .filter((job) => {
-        // Check if either the id or title is in appliedJobIds
-        const isAppliedById = job.id && appliedJobIds.includes(job.id);
-        const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
-        return !isAppliedById && !isAppliedByTitle;
-      });
-  }, [appliedJobIds]);
+  const rawJobs = flattenJobs(jobDataList);
+
+  return rawJobs
+    .map((job, index) => decorateJob(job, index))
+    .filter(job => {
+      const isAppliedById = appliedJobIds.includes(job.id);
+      const isAppliedByTitle = appliedJobIds.includes(job.title);
+      return !isAppliedById && !isAppliedByTitle;
+    });
+}, [jobDataList, appliedJobIds]);
+
 
   const handleCardSelect = useCallback((job) => {
     setSelectedJob(job);
@@ -205,6 +262,9 @@ function Home() {
     setSelectedJob(null);
   }, []);
 
+  console.log("USER:", currentUser);
+console.log("RAW JOBS:", jobs);
+console.log("APPLIED IDS:", appliedJobIds);
   return (
     <div className="relative w-full flex flex-col justify-center items-center h-screen overflow-hidden">
       <div className="hidden w-full h-full md:flex md:flex-col md:items-center">
@@ -212,17 +272,22 @@ function Home() {
           SWIPE AND PICK YOUR JOB
         </h1>
         <div className="w-full h-full">
-          <Home_cards />
+          <Home_cards jobs={jobs} />
         </div>
       </div>
       <div className="block md:hidden p-3 pb-24">
         <h1 className="text-2xl font-[jost-bold] mt-3 mb-3 text-[#1f1f1f] text-left tracking-tight self-start ">
           SWIPE AND PICK YOUR JOB
         </h1>
-        <HomeCardMobile
+        {/* <HomeCardMobile
           jobs={jobs.length ? jobs : undefined}
           onCardSelect={handleCardSelect}
-        />
+        /> */}
+        <HomeCardMobile
+  jobs={jobs}
+  onCardSelect={handleCardSelect}
+/>
+
       </div>
       <HomeJobMobile
         job={selectedJob}

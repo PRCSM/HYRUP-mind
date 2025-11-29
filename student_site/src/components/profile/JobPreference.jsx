@@ -1,12 +1,12 @@
 import React from 'react';
 
-function JobPreference() {
-  const preferences = [
-    'App Development',
-    'UI/UX',
-    'Full Stack Development',
-    'AI/ML',
-  ];
+function JobPreference({preferences = []}) {
+  // const preferences = [
+  //   'App Development',
+  //   'UI/UX',
+  //   'Full Stack Development',
+  //   'AI/ML',
+  // ];
 
   return (
     <div className="bg-[#FFFAE9] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] p-4 md:p-6">
