@@ -92,20 +92,20 @@ const decorateJob = (job, index) => {
     (typeof job.preferences?.minExperience === "number"
       ? `${job.preferences.minExperience}+ yrs experience`
       : job.jobType === "on-campus"
-      ? "Campus opportunity"
-      : null);
+        ? "Campus opportunity"
+        : null);
 
   const salaryText = formatCurrencyRange(job.salaryRange);
   const highlights =
     (Array.isArray(job.cardHighlights) && job.cardHighlights.length
       ? job.cardHighlights
       : buildHighlights(job, {
-          experienceLabel,
-          modeLabel,
-          employmentTypeLabel,
-          locationLabel,
-          salaryText,
-        })) ?? [];
+        experienceLabel,
+        modeLabel,
+        employmentTypeLabel,
+        locationLabel,
+        salaryText,
+      })) ?? [];
 
   const cardTagline =
     job.cardTagline ??
@@ -125,7 +125,7 @@ const decorateJob = (job, index) => {
   return {
     ...job,
     id:
-      job.id ?? job._id ?? 
+      job.id ?? job._id ??
       `${(job.title || "job")
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")}-${index}`,
@@ -181,27 +181,27 @@ function Home() {
   //   fetchJobs()
   // },[currentUser])
   React.useEffect(() => {
-  const fetchJobs = async () => {
-    if (!currentUser) return; 
-    
-    const token = await currentUser.getIdToken();
-    if (!token) return;  // wait until token exists
+    const fetchJobs = async () => {
+      if (!currentUser) return;
 
-    console.log("FETCHING JOBS WITH TOKEN:", token);
-    
-    try {
-      const response = await apiService.getStudentJobs();
-      setJobDataList(response?.data || response || []);
-    } catch (err) {
-      console.error("Job fetch error:", err);
-    }
-  };
+      const token = await currentUser.getIdToken();
+      if (!token) return;  // wait until token exists
 
-  // Delay slightly to ensure Firebase refresh finished
-  const timeout = setTimeout(fetchJobs, 300);
+      console.log("FETCHING JOBS WITH TOKEN:", token);
 
-  return () => clearTimeout(timeout);
-}, [currentUser]);
+      try {
+        const response = await apiService.getStudentJobs();
+        setJobDataList(response?.data || response || []);
+      } catch (err) {
+        console.error("Job fetch error:", err);
+      }
+    };
+
+    // Delay slightly to ensure Firebase refresh finished
+    const timeout = setTimeout(fetchJobs, 300);
+
+    return () => clearTimeout(timeout);
+  }, [currentUser]);
 
   // Load applied jobs to filter them out
   React.useEffect(() => {
@@ -242,16 +242,16 @@ function Home() {
   //     });
   // }, [appliedJobIds]);
   const jobs = useMemo(() => {
-  const rawJobs = flattenJobs(jobDataList);
+    const rawJobs = flattenJobs(jobDataList);
 
-  return rawJobs
-    .map((job, index) => decorateJob(job, index))
-    .filter(job => {
-      const isAppliedById = appliedJobIds.includes(job.id);
-      const isAppliedByTitle = appliedJobIds.includes(job.title);
-      return !isAppliedById && !isAppliedByTitle;
-    });
-}, [jobDataList, appliedJobIds]);
+    return rawJobs
+      .map((job, index) => decorateJob(job, index))
+      .filter(job => {
+        const isAppliedById = appliedJobIds.includes(job.id);
+        const isAppliedByTitle = appliedJobIds.includes(job.title);
+        return !isAppliedById && !isAppliedByTitle;
+      });
+  }, [jobDataList, appliedJobIds]);
 
 
   const handleCardSelect = useCallback((job) => {
@@ -263,8 +263,8 @@ function Home() {
   }, []);
 
   console.log("USER:", currentUser);
-console.log("RAW JOBS:", jobs);
-console.log("APPLIED IDS:", appliedJobIds);
+  console.log("RAW JOBS:", jobs);
+  console.log("APPLIED IDS:", appliedJobIds);
   return (
     <div className="relative w-full flex flex-col justify-center items-center h-screen overflow-hidden">
       <div className="hidden w-full h-full md:flex md:flex-col md:items-center">
@@ -284,9 +284,9 @@ console.log("APPLIED IDS:", appliedJobIds);
           onCardSelect={handleCardSelect}
         /> */}
         <HomeCardMobile
-  jobs={jobs}
-  onCardSelect={handleCardSelect}
-/>
+          jobs={jobs}
+          onCardSelect={handleCardSelect}
+        />
 
       </div>
       <HomeJobMobile

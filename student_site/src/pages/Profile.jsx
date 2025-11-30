@@ -8,119 +8,125 @@ import Experience from '../components/profile/Experience';
 import Projects from '../components/profile/Projects';
 
 function Profile() {
-    const [profile, setProfile] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const normalizeProfile = (data) => ({
-  fullName: data.profile?.FullName || "",
-  profilePicture: data.profile?.profilePicture || "",
-  bio: data.profile?.bio || "",
-  about: data.profile?.about || "",
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const normalizeProfile = (data) => ({
+    fullName: data.profile?.FullName || "",
+    profilePicture: data.profile?.profilePicture || "",
+    bio: data.profile?.bio || "",
+    about: data.profile?.about || "",
+    resume: data.profile?.resume || "",
 
-  education: {
-    college: data.education?.college || "",
-    degree: data.education?.degree || "",
-    year: data.education?.yearOfPassing || "",
-    collegeEmail: data.education?.collegeEmail || "",
-  },
+    education: {
+      college: data.education?.college || "",
+      degree: data.education?.degree || "",
+      year: data.education?.yearOfPassing || "",
+      collegeEmail: data.education?.collegeEmail || "",
+    },
 
-  skills: Object.keys(data.user_skills || {}),
+    skills: data.user_skills || {},
 
-  preferences: data.job_preference || [],
+    preferences: data.job_preference || [],
 
-  experience: (data.experience || []).map(exp => ({
-    organization: exp.nameOfOrg,
-    position: exp.position,
-    timeline: exp.timeline,
-    description: exp.description
-  })),
+    experience: (data.experience || []).map(exp => ({
+      organization: exp.nameOfOrg,
+      position: exp.position,
+      timeline: exp.timeline,
+      description: exp.description
+    })),
 
-  projects: (data.projects || []).map(p => ({
-    name: p.projectName,
-    link: p.link,
-    description: p.description
-  }))
-});
+    projects: (data.projects || []).map(p => ({
+      name: p.projectName,
+      link: p.link,
+      description: p.description
+    }))
+  });
 
-    useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      const data = await apiService.getStudentDetails();
-      console.log("PROFILE DATA:", data);
-      setProfile(normalizeProfile(response.user));
-    } catch (err) {
-      console.error("Profile fetch failed:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await apiService.getStudentDetails();
+        console.log("PROFILE DATA:", data);
+        setProfile(normalizeProfile(data.user));
+      } catch (err) {
+        console.error("Profile fetch failed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchProfile();
-}, []);
+    fetchProfile();
+  }, []);
 
 
-    if (loading) {
+  if (loading) {
+    return (
+      <div className='w-full flex justify-center items-center pt-20 text-xl font-bold'>
+        Loading profile...
+      </div>
+    );
+  }
+
   return (
-    <div className='w-full flex justify-center items-center pt-20 text-xl font-bold'>
-      Loading profile...
+    <div className='w-full h-full flex gap-10 items-center justify-center pt-16'>
+      <div className='w-[95%] md:w-[90%] h-[95%] md:h-[89%] bg-[#efebe0] rounded-[10px] border-2 sm:border-4 border-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] overflow-auto custom-scroll p-4 md:p-6'>
+        <div className="space-y-4 md:space-y-6">
+          {/* Header Section */}
+          <ProfileHeader
+            fullName={profile?.fullName}
+            profilePicture={profile?.profilePicture}
+            about={profile?.about}
+            resume={profile?.resume}
+          />
+
+          {/* Mobile: Stack all sections vertically */}
+          {/* Desktop: Two Column Layout */}
+          <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-[250px_1fr] gap-4 md:gap-6">
+            {/* Education */}
+            <div className="md:hidden">
+              <Education education={profile.education} />
+            </div>
+
+            {/* Skills */}
+            <div className="md:hidden">
+              <Skills skills={profile.skills} />
+            </div>
+
+            {/* Job Preference */}
+            <div className="md:hidden">
+              <JobPreference preferences={profile.preferences} />
+            </div>
+
+            {/* Experience */}
+            <div className="md:hidden">
+              <Experience experiences={profile.experience} />
+            </div>
+
+            {/* Projects */}
+            <div className="md:hidden">
+              <Projects projects={profile.projects} />
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden md:block space-y-6">
+              <Education education={profile.education} />
+              <JobPreference preferences={profile.preferences} />
+            </div>
+
+            <div className="hidden md:block space-y-6">
+              <Skills skills={profile.skills} />
+              <Experience experience={profile.experience} />
+            </div>
+          </div>
+
+          {/* Projects Section - Full Width on Desktop */}
+          <div className="hidden md:block">
+            <Projects projects={profile.projects} />
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
-
-    return (
-        <div className='w-full h-full flex gap-10 items-center justify-center pt-16'>
-            <div className='w-[95%] md:w-[90%] h-[95%] md:h-[89%] bg-[#efebe0] rounded-[10px] border-2 sm:border-4 border-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] overflow-auto custom-scroll p-4 md:p-6'>
-                <div className="space-y-4 md:space-y-6">
-                    {/* Header Section */}
-                    <ProfileHeader />
-
-                    {/* Mobile: Stack all sections vertically */}
-                    {/* Desktop: Two Column Layout */}
-                    <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-[250px_1fr] gap-4 md:gap-6">
-                        {/* Education */}
-                        <div className="md:hidden">
-                            <Education education={profile.education}/>
-                        </div>
-
-                        {/* Skills */}
-                        <div className="md:hidden">
-                            <Skills skills={profile.skills}/>
-                        </div>
-
-                        {/* Job Preference */}
-                        <div className="md:hidden">
-                            <JobPreference preferences={profile.preferences}/>
-                        </div>
-
-                        {/* Experience */}
-                        <div className="md:hidden">
-                            <Experience experiences={profile.experience} />
-                        </div>
-
-                        {/* Projects */}
-                        <div className="md:hidden">
-                            <Projects projects={profile.projects} />
-                        </div>
-
-                        {/* Desktop Layout */}
-                        <div className="hidden md:block space-y-6">
-                            <Education education={profile.education}/>
-                            <JobPreference preferences={profile.preferences} />
-                        </div>
-
-                        <div className="hidden md:block space-y-6">
-                            <Skills skills={profile.skills}/>
-                            <Experience experience={profile.experience}/>
-                        </div>
-                    </div>
-
-                    {/* Projects Section - Full Width on Desktop */}
-                    <div className="hidden md:block">
-                        <Projects projects={profile.projects}/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 }
 
 export default Profile;

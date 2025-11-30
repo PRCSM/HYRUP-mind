@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileHeaderEdit from "../components/profile/edit/ProfileHeaderEdit";
 import EducationEdit from "../components/profile/edit/EducationEdit";
@@ -6,84 +6,183 @@ import SkillsEdit from "../components/profile/edit/SkillsEdit";
 import JobPreferenceEdit from "../components/profile/edit/JobPreferenceEdit";
 import ExperienceEdit from "../components/profile/edit/ExperienceEdit";
 import ProjectsEdit from "../components/profile/edit/ProjectsEdit";
+import { useAuth } from "../hooks/useAuth";
+import apiService from "../../services/apiService";
 
 function ProfileEdit() {
   const navigate = useNavigate();
+  const { userData, updateUserData } = useAuth();
   const [isSaving, setIsSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Initial state for all profile data
   const [profileData, setProfileData] = useState({
     header: {
-      name: "ALEX MAXWELLS",
-      about:
-        "CodeSprint 2024 is a 48-hour global coding marathon that brings together developers, designers, and innovators to build impactful solutions using AI, .",
-      profileImage: "/images/mix.png",
+      name: "",
+      about: "",
+      profileImage: "",
     },
     education: {
-      university: "Sastra University",
-      type: "Deemed University",
-      degree: "Btech",
-      email: "125984@sastra.ac.in",
-      graduationYear: "2027",
+      university: "",
+      type: "",
+      degree: "",
+      email: "",
+      graduationYear: "",
     },
-    skills: [
-      { name: "ADOBE", color: "bg-[#FFD54F]" },
-      { name: "REACT", color: "bg-white" },
-      { name: "FLUTTER", color: "bg-[#96E7E5]" },
-      { name: "FIGMA", color: "bg-[#40FFB9]" },
-      { name: "TENSOR FLOW", color: "bg-white" },
-    ],
-    jobPreferences: [
-      "App Development",
-      "UI/UX",
-      "Full Stack Development",
-      "AI/ML",
-    ],
-    experiences: [
-      {
-        organization: "MaxWells Coperations",
-        position: "AI Intern",
-        timeline: "Jan 2025 - Feb 2025",
-        description:
-          "Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search",
-      },
-      {
-        organization: "MaxWells Coperations",
-        position: "AI Intern",
-        timeline: "Jan 2025 - Feb 2025",
-        description:
-          "Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search",
-      },
-    ],
-    projects: [
-      {
-        name: "MaxWells Coperations",
-        link: "https://amxa.com/pro1",
-        description:
-          "Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search",
-      },
-      {
-        name: "MaxWells Coperations",
-        link: "https://amxa.com/pro1",
-        description:
-          "Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search",
-      },
-    ],
+    skills: [],
+    jobPreferences: [],
+    experiences: [],
+    projects: [],
   });
 
-  const handleSave = () => {
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        // If we have userData from context, we can use it, but it might be better to fetch fresh data
+        // to ensure we have the latest details, especially if userData in context is partial.
+        // However, based on AuthContext, userData seems to be the full user object.
+        // Let's fetch fresh data to be safe and consistent with Profile.jsx
+        const response = await apiService.getStudentDetails();
+        if (response && response.user) {
+          const normalizedData = normalizeProfileForEdit(response.user);
+          setProfileData(normalizedData);
+        }
+      } catch (error) {
+        console.error("Failed to fetch profile data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  const normalizeProfileForEdit = (data) => {
+    // Map backend data to frontend state structure
+    return {
+      header: {
+        name: data.profile?.FullName || "",
+        about: data.profile?.about || "",
+        profileImage: data.profile?.profilePicture || "/images/mix.png", // Fallback image
+      },
+      education: {
+        university: data.education?.college || "",
+        type: "Deemed University", // This field doesn't seem to exist in backend, keeping default or empty
+        degree: data.education?.degree || "",
+        email: data.education?.collegeEmail || "",
+        graduationYear: data.education?.yearOfPassing || "",
+      },
+      skills: Object.entries(data.user_skills || {}).map(([name, details]) => ({
+        name: name.toUpperCase(),
+        color: getSkillColor(details?.level),
+        level: details?.level
+      })),
+      jobPreferences: data.job_preference || [],
+      experiences: (data.experience || []).map((exp) => ({
+        organization: exp.nameOfOrg,
+        position: exp.position,
+        timeline: exp.timeline,
+        description: exp.description,
+      })),
+      projects: (data.projects || []).map((p) => ({
+        name: p.projectName,
+        link: p.link,
+        description: p.description,
+      })),
+    };
+  };
+
+  const getSkillColor = (level) => {
+    const colors = {
+      unverified: "bg-[#F2DEBA]",
+      beginner: "bg-[#40FFB9]",
+      intermediate: "bg-[#96E7E5]",
+      advance: "bg-[#FFD54F]",
+    };
+    return colors[level] || "bg-white";
+  };
+
+  const denormalizeProfileForSave = (frontendData) => {
+    // Map frontend state back to backend structure
+    // Note: We need to be careful not to lose existing data structures if the backend expects full objects
+
+    // Construct the skills object
+    const user_skills = {};
+    frontendData.skills.forEach(skill => {
+      // Preserve existing level if possible, or default to unverified for new skills
+      // Since we don't store the full skill object in state, we might lose some metadata if we are not careful.
+      // But for now, we just map name and level.
+      user_skills[skill.name] = {
+        level: skill.level || "unverified"
+      };
+    });
+
+    return {
+      profile: {
+        FullName: frontendData.header.name,
+        about: frontendData.header.about,
+        // profilePicture is handled separately via upload usually, but if it's a string URL update:
+        profilePicture: frontendData.header.profileImage
+      },
+      education: {
+        college: frontendData.education.university,
+        degree: frontendData.education.degree,
+        yearOfPassing: frontendData.education.graduationYear,
+        collegeEmail: frontendData.education.email,
+      },
+      user_skills: user_skills,
+      job_preference: frontendData.jobPreferences,
+      experience: frontendData.experiences.map(exp => ({
+        nameOfOrg: exp.organization,
+        position: exp.position,
+        timeline: exp.timeline,
+        description: exp.description
+      })),
+      projects: frontendData.projects.map(p => ({
+        projectName: p.name,
+        link: p.link,
+        description: p.description
+      }))
+    };
+  };
+
+  const handleSave = async () => {
     setIsSaving(true);
-    // Simulate save operation
-    setTimeout(() => {
-      setIsSaving(false);
+    try {
+      const payload = denormalizeProfileForSave(profileData);
+
+      // Call API to update profile
+      const response = await apiService.updateStudentProfile(payload);
+
+      // Update local context if needed
+      if (response && response.user) {
+        updateUserData(response.user);
+      }
+
       // Navigate back to profile with smooth transition
-      navigate("/profile");
-    }, 1000);
+      setTimeout(() => {
+        setIsSaving(false);
+        navigate("/profile");
+      }, 500);
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      setIsSaving(false);
+      // You might want to show an error message to the user here
+      alert("Failed to save profile. Please try again.");
+    }
   };
 
   const handleCancel = () => {
     navigate("/profile");
   };
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="text-xl font-[Jost-Bold]">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full flex gap-10 items-center justify-center pt-16 animate-slideInRight">

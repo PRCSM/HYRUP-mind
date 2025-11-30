@@ -9,8 +9,7 @@ function Carosal({ jobsData = [], onJobClick }) {
     const x = useMotionValue(0);
     const [isDragging, setIsDragging] = useState(false);
 
-    // Use passed jobsData or slice to top 10
-    const allJobs = jobsData.slice(0, 10);
+    const allJobs = jobsData;
 
     const breakpoints = {
         0: { slidesToShow: 1 },
@@ -35,7 +34,7 @@ function Carosal({ jobsData = [], onJobClick }) {
         updateSlidesToShow();
         window.addEventListener('resize', updateSlidesToShow);
         return () => window.removeEventListener('resize', updateSlidesToShow);
-    }, []); 
+    }, []);
 
     const getSlideWidth = () => {
         const isMobile = window.innerWidth < 768;
@@ -56,20 +55,20 @@ function Carosal({ jobsData = [], onJobClick }) {
         }
     }, [index, x, isDragging]);
 
-  
+
     useEffect(() => {
         const maxIndex = Math.max(0, allJobs.length - slidesToShow);
         if (index > maxIndex) {
             setIndex(maxIndex);
         }
-    }, [slidesToShow, index, allJobs.length]); 
+    }, [slidesToShow, index, allJobs.length]);
     const maxIndex = Math.max(0, allJobs.length - slidesToShow);
 
     const handleDragEnd = (event, info) => {
         setIsDragging(false);
         const slideWidth = getSlideWidth();
         const threshold = slideWidth / 4; // 25% of slide width to trigger change
-        
+
         if (info.offset.x > threshold && index > 0) {
             // Swiped right - go to previous
             setIndex(index - 1);
@@ -93,10 +92,9 @@ function Carosal({ jobsData = [], onJobClick }) {
                 disabled={index === 0}
                 onClick={() => setIndex((i) => Math.max(0, i - 1))}
                 className={`absolute hidden md:block left-1 md:-left-6 top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all z-30 border-2 border-black
-                    ${
-                        index === 0
-                            ? 'opacity-40 cursor-not-allowed bg-gray-300'
-                            : 'bg-white hover:scale-110 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
+                    ${index === 0
+                        ? 'opacity-40 cursor-not-allowed bg-gray-300'
+                        : 'bg-white hover:scale-110 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
                     }`}>
                 <svg
                     className="w-5 md:w-6 h-5 md:h-6 text-gray-900"
@@ -116,10 +114,9 @@ function Carosal({ jobsData = [], onJobClick }) {
                 disabled={index === maxIndex}
                 onClick={() => setIndex((i) => Math.min(maxIndex, i + 1))}
                 className={`absolute hidden md:block right-1 md:right-6 top-1/2 -translate-y-1/2 w-10 md:w-12 h-10 md:h-12 rounded-full flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all z-30 border-2 border-black
-                    ${
-                        index === maxIndex
-                            ? 'opacity-40 cursor-not-allowed bg-gray-300'
-                            : 'bg-white hover:scale-110 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
+                    ${index === maxIndex
+                        ? 'opacity-40 cursor-not-allowed bg-gray-300'
+                        : 'bg-white hover:scale-110 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
                     }`}>
                 <svg
                     className="w-5 md:w-6 h-5 md:h-6 text-gray-900"
@@ -137,8 +134,8 @@ function Carosal({ jobsData = [], onJobClick }) {
 
             {/* Carousel content */}
             <div className="relative py-2 overflow-hidden" ref={containerRef}>
-                <motion.div 
-                    className="flex gap-4 md:gap-6" 
+                <motion.div
+                    className="flex gap-4 md:gap-6"
                     style={{ x }}
                     drag="x"
                     dragConstraints={{ left: -maxIndex * getSlideWidth(), right: 0 }}
@@ -155,10 +152,7 @@ function Carosal({ jobsData = [], onJobClick }) {
                         </div>
                     ))}
                 </motion.div>
-                
-                {/* Left gradient fade */}
-                {/* <div className="absolute left-0 top-0 bottom-0 w-16 bg-linear-to-r from-[#fff9e3] to-transparent pointer-events-none z-10"></div> */}
-                
+
                 {/* Right gradient fade */}
                 <div className="absolute right-0 top-0 bottom-0 w-16 bg-linear-to-l from-[#fff9e3] to-transparent pointer-events-none z-10"></div>
             </div>

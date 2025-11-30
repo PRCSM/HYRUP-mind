@@ -5,8 +5,7 @@ import Job_section from '../components/jobs/Job_section'
 import View_More from '../components/jobs/View_More'
 import Job_Details from '../components/jobs/Job_Details'
 import Hackathon_details from '../components/jobs/Hackathon_details'
-// import demoData from '../demodata/demodata.json'
-// import hackathonData from '../demodata/hackathon.json'
+
 import jobStore from '../utils/jobStore'
 import apiService from '../../services/apiService'
 
@@ -49,52 +48,65 @@ function Jobs() {
     }, []);
 
     React.useEffect(() => {
-  const fetchData = async () => {
-    try {
-      setLoading(true);
+        const fetchData = async () => {
+            try {
+                setLoading(true);
 
-      const jobResponse = await apiService.getStudentJobs();  
-      const hackathonResponse = await apiService.getHackathons();
+                const jobResponse = await apiService.getStudentJobs();
+                const hackathonResponse = await apiService.getHackathons();
 
-      // Normalize job IDs (_id → id)
-      const normalizedJobs = (jobResponse?.data || jobResponse || []).map((job, i) => ({
-        ...job,
-        id: job.id ?? job._id ?? `job-${i}`
-      }));
+                const getArray = (res) => {
+                    if (Array.isArray(res)) return res;
+                    if (res?.data && Array.isArray(res.data)) return res.data;
+                    if (res?.jobs && Array.isArray(res.jobs)) return res.jobs;
+                    if (res?.hackathons && Array.isArray(res.hackathons)) return res.hackathons;
+                    return [];
+                };
 
-      setJobs(normalizedJobs);
-      setHackathons(hackathonResponse?.data || hackathonResponse || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setJobs([]);
-      setHackathons([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+                const rawJobs = getArray(jobResponse);
+                const rawHackathons = getArray(hackathonResponse);
 
-  fetchData();
-}, []);
+                const normalizedJobs = rawJobs.map((job, i) => {
+                    const companyName = job.recruiter?.company?.name || job.college || job.company || job.companyName;
+                    const companyDescription = job.recruiter?.company?.description || job.aboutCompany;
+                    const companyLogo = job.recruiter?.company?.logo;
 
-    // Get all jobs and filter out applied ones
-    // const allJobs = [
-    //     ...(demoData.companyJobs || []),
-    //     ...(demoData.onCampusJobs || [])
-    // ].filter(job => {
-    //     // Check if either the id or title is in appliedJobIds
-    //     const isAppliedById = job.id && appliedJobIds.includes(job.id);
-    //     const isAppliedByTitle = job.title && appliedJobIds.includes(job.title);
-    //     return !isAppliedById && !isAppliedByTitle;
-    // });
+                    return {
+                        ...job,
+                        id: job.id ?? job._id ?? `job-${i}`,
+                        company: companyName,
+                        companyName: companyName,
+                        aboutCompany: companyDescription,
+                        companyLogo: companyLogo,
+                        aboutJob: job.details || job.description,
+                        location: job.preferences?.location || job.location,
+                        skills: job.preferences?.skills || [],
+                    };
+                });
+
+                setJobs(normalizedJobs);
+                setHackathons(rawHackathons);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setJobs([]);
+                setHackathons([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     const filteredJobs = jobs.filter(job => {
-  const isAppliedById = appliedJobIds.includes(job.id);
-  const isAppliedByTitle = appliedJobIds.includes(job.title);
-  return !isAppliedById && !isAppliedByTitle;
-});
+        const isAppliedById = appliedJobIds.includes(job.id);
+        const isAppliedByTitle = appliedJobIds.includes(job.title);
+        return !isAppliedById && !isAppliedByTitle;
+    });
 
 
-    // Get all hackathons - hackathon.json is an array directly
-    // const allHackathons = Array.isArray(hackathonData) ? hackathonData : [];
+
 
     const handleViewMoreJobs = () => {
         setViewMode('jobs');
@@ -111,7 +123,7 @@ function Jobs() {
     const handleJobClick = (item) => {
         // Check if it's a hackathon by checking for organizer field
         const isHackathon = item?.organizer !== undefined;
-        
+
         if (isHackathon) {
             setSelectedHackathon(item);
             setIsHackathonDetailsOpen(true);
@@ -135,19 +147,19 @@ function Jobs() {
         <div className='relative w-full h-full pt-20 pb-24 md:pb-0 flex flex-col overflow-y-auto overflow-x-hidden'>
             <AnimatePresence mode="wait">
                 {viewMode === 'jobs' ? (
-                    <View_More 
+                    <View_More
                         key="jobs-view"
-                        // jobs={allJobs} 
-                        jobs={filteredJobs} 
+
+                        jobs={filteredJobs}
                         onClose={handleClose}
                         title="All Jobs"
                         onJobClick={handleJobClick}
                     />
                 ) : viewMode === 'hackathons' ? (
-                    <View_More 
+                    <View_More
                         key="hackathons-view"
-                        // jobs={allHackathons} 
-                        jobs={hackathons} 
+
+                        jobs={hackathons}
                         onClose={handleClose}
                         title="All Hackathons"
                         onJobClick={handleJobClick}
@@ -160,19 +172,19 @@ function Jobs() {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <Job_section 
-                            title="Top job picks for you" 
+                        <Job_section
+                            title="Top job picks for you"
                             description="Based on your profile, preference and activity like applies, searches and saves"
                             onViewMore={handleViewMoreJobs}
-                            // jobsData={allJobs}
+
                             jobsData={filteredJobs}
                             onJobClick={handleJobClick}
                         />
-                        <Job_section 
-                            title="Hackathon" 
+                        <Job_section
+                            title="Hackathon"
                             description="Based on your profile, preference and activity like applies, searches and saves"
                             onViewMore={handleViewMoreHackathons}
-                            // jobsData={allHackathons}
+
                             jobsData={hackathons}
                             onJobClick={handleJobClick}
                         />
@@ -181,14 +193,14 @@ function Jobs() {
             </AnimatePresence>
 
             {/* Job Details Modal */}
-            <Job_Details 
+            <Job_Details
                 job={selectedJob}
                 isOpen={isJobDetailsOpen}
                 onClose={handleJobDetailsClose}
             />
 
             {/* Hackathon Details Modal */}
-            <Hackathon_details 
+            <Hackathon_details
                 hackathon={selectedHackathon}
                 isOpen={isHackathonDetailsOpen}
                 onClose={handleHackathonDetailsClose}

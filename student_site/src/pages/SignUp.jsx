@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PageReveal from "../components/common/PageReveal";
 import SignUpCard from "../components/SignUp/SignUpCard";
+import { useAuth } from "../hooks/useAuth";
+import apiService from "../../services/apiService";
 
 function SignUp() {
   const navigate = useNavigate();
+  const { signInWithGoogle } = useAuth();
   const [showReveal, setShowReveal] = useState(true);
   const [isPressed, setIsPressed] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
@@ -72,17 +75,43 @@ function SignUp() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setIsPressed(true);
     setTimeout(() => setIsPressed(false), 150);
 
-    // Trigger exit animation
-    setIsExiting(true);
+    try {
+      await signInWithGoogle();
 
-    // Navigate after animation completes
-    setTimeout(() => {
-      navigate("/registration");
-    }, 1000); // 1 second for smooth exit animation
+      // Check if user exists in backend
+      try {
+        const user = await apiService.checkUser();
+
+        // Trigger exit animation
+        setIsExiting(true);
+
+        if (user && user.exists) {
+          // User exists, redirect to home
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
+        } else {
+          // User exists but flag is false (unlikely given checkUser logic, but safe fallback)
+          setTimeout(() => {
+            navigate("/registration");
+          }, 1000);
+        }
+      } catch (error) {
+        // User does not exist (404) or other error -> redirect to registration
+        console.log("User not found or error, redirecting to registration:", error);
+        setIsExiting(true);
+        setTimeout(() => {
+          navigate("/registration");
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Google Sign In failed", error);
+      // Optional: Show error state to user
+    }
   };
 
   // Card configurations
@@ -329,18 +358,16 @@ function SignUp() {
 
       {/* Main Content */}
       <div
-        className={`absolute top-0 left-0 p-3 md:p-4 z-50 transition-all duration-500 ${
-          isExiting ? "opacity-0 scale-95" : "opacity-100 scale-100"
-        }`}
+        className={`absolute top-0 left-0 p-3 md:p-4 z-50 transition-all duration-500 ${isExiting ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          }`}
       >
         <h1 className="text-xl md:text-2xl font-[inter-bold] text-amber-600">
           HYRUP.IN
         </h1>
       </div>
       <div
-        className={`w-full h-full flex flex-col md:flex-row transition-all duration-500 ${
-          isExiting ? "opacity-0 scale-95" : "opacity-100 scale-100"
-        }`}
+        className={`w-full h-full flex flex-col md:flex-row transition-all duration-500 ${isExiting ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          }`}
       >
         {/* Text Section - Bottom on mobile, Left on desktop */}
         <div className="order-2 md:order-1 flex-1 flex flex-col items-start justify-center px-5 md:pl-10 py-6 md:py-0">
@@ -359,25 +386,22 @@ function SignUp() {
             onClick={handleClick}
           >
             <div
-              className={`absolute w-full h-full transition-all duration-100 ease-out ${
-                isPressed
+              className={`absolute w-full h-full transition-all duration-100 ease-out ${isPressed
                   ? "top-0.5 left-0.5"
                   : "top-1 left-1 md:top-1.5 md:left-1.5 group-hover:top-1.5 group-hover:left-1.5 md:group-hover:top-2 md:group-hover:left-2"
-              }`}
+                }`}
             >
               <div className="absolute -left-7 md:-left-8 top-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-black rounded-full" />
               <div className="w-full h-full bg-black rounded-lg" />
             </div>
 
             <div
-              className={`relative flex items-center transition-transform duration-100 ease-out ${
-                isPressed ? "translate-x-0.5 translate-y-0.5" : ""
-              }`}
+              className={`relative flex items-center transition-transform duration-100 ease-out ${isPressed ? "translate-x-0.5 translate-y-0.5" : ""
+                }`}
             >
               <div
-                className={`absolute -left-7 md:-left-8 top-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-[#D9F99D] rounded-full border-2 border-black flex items-center justify-center z-10 transition-all duration-100 ${
-                  isPressed ? "scale-95" : "scale-100"
-                }`}
+                className={`absolute -left-7 md:-left-8 top-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-[#D9F99D] rounded-full border-2 border-black flex items-center justify-center z-10 transition-all duration-100 ${isPressed ? "scale-95" : "scale-100"
+                  }`}
               >
                 <svg viewBox="0 0 24 24" className="w-8 h-8 md:w-9 md:h-9">
                   <path
@@ -400,9 +424,8 @@ function SignUp() {
               </div>
 
               <div
-                className={`bg-[#D9F99D] rounded-lg border-2 border-black transition-all duration-100 ${
-                  isPressed ? "scale-[0.98]" : "scale-100"
-                }`}
+                className={`bg-[#D9F99D] rounded-lg border-2 border-black transition-all duration-100 ${isPressed ? "scale-[0.98]" : "scale-100"
+                  }`}
               >
                 <span className="block px-8 py-4 md:px-10 md:py-4 text-base md:text-xl font-[Jost-Bold] text-black pl-10 md:pl-12">
                   Continue with Google

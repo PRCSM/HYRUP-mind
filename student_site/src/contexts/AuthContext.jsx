@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
         const result = await signInWithPopup(auth, googleProvider);
         // After a successful popup sign-in, proactively check backend registration
         try {
-          await checkUserType();
+          await checkUserType(result.user);
         } catch (err) {
           if (import.meta.env.DEV)
             console.warn("checkUserType after popup sign-in failed:", err);
@@ -89,114 +89,46 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Check user type and get user data
-  // const checkUserType = async () => {
-  //   try {
-  //     setError(null);
+  const checkUserType = async (user) => {
+    const targetUser = user || currentUser;
+    if (!targetUser) return;
 
-  //     // Get current user UID
-  //     const currentUserUid = auth.currentUser?.uid;
-  //     if (!currentUserUid) {
-  //       // No current user UID available
-  //       setUserType(null);
-  //       setUserData(null);
-  //       return { type: null, data: null };
-  //     }
+    const token = await targetUser.getIdToken();
 
-  //     // First, check if user is registered as a company/recruiter using our public endpoint
-  //     try {
-  //       // Checking if user is registered as recruiter/company
-  //       const registrationResponse = await apiService.checkUserRegistration(
-  //         currentUserUid
-  //       );
-  //       if (registrationResponse.success && registrationResponse.isRegistered) {
-  //         // User found as registered recruiter
-  //         setUserType("recruiter");
-  //         setUserData({
-  //           id: registrationResponse.data.recruiterId,
-  //           name: registrationResponse.data.recruiterName,
-  //           email: registrationResponse.data.recruiterEmail,
-  //           companyId: registrationResponse.data.companyId,
-  //           companyName: registrationResponse.data.companyName,
-  //         });
-  //         return {
-  //           type: "recruiter",
-  //           data: {
-  //             id: registrationResponse.data.recruiterId,
-  //             name: registrationResponse.data.recruiterName,
-  //             email: registrationResponse.data.recruiterEmail,
-  //             companyId: registrationResponse.data.companyId,
-  //             companyName: registrationResponse.data.companyName,
-  //           },
-  //         };
-  //       }
-  //     } catch {
-  //       // Registration check failed, trying other methods
-  //     }
+    let res;
+    try {
+      res = await apiService.checkUser();
+    } catch (err) {
 
-  //     // Try to check if user exists as student
-  //     try {
-  //       const studentResponse = await apiService.checkUser();
-  //       if (studentResponse.exists && studentResponse.userType === "student") {
-  //         setUserType("student");
-  //         setUserData(studentResponse.user);
-  //         return { type: "student", data: studentResponse.user };
-  //       }
-  //     } catch {
-  //       // Student check failed
-  //     }
-
-  //     // Try recruiter login (legacy check)
-  //     try {
-  //       const recruiterResponse = await apiService.recruiterLogin();
-  //       if (recruiterResponse.user) {
-  //         setUserType("recruiter");
-  //         setUserData(recruiterResponse.user);
-  //         return { type: "recruiter", data: recruiterResponse.user };
-  //       }
-  //     } catch {
-  //       // Legacy recruiter check failed
-  //     }
-
-  //     // User doesn't exist in any system
-  //     // User not found in any system
-  //     setUserType(null);
-  //     setUserData(null);
-  //     return { type: null, data: null };
-  //   } catch (error) {
-  //     // Error checking user type
-  //     setError(error.message);
-  //     setUserType(null);
-  //     setUserData(null);
-  //     return { type: null, data: null };
-  //   }
-  // };
-
-  const checkUserType = async () => {
-  if (!currentUser) return;
-
-  const token = await currentUser.getIdToken();
-
-  let res;
-  try {
-    res = await apiService.checkUser();
-  } catch (err) {
-
-    // 🟢 NEW FIX: auto create student
-    if (err?.message?.includes("Student not found")) {
-      console.log("Registering user automatically...");
-      res = await apiService.registerStudent({
-        uid: currentUser.uid,
-        name: currentUser.displayName,
-        email: currentUser.email
-      });
-    } else {
+      // 🟢 NEW FIX: auto create student
       throw err;
     }
-  }
 
-  setUserType(res?.role ?? "student");
-};
+
+    const type = res?.role ?? "student";
+    setUserType(type);
+
+    if (type === "student") {
+      try {
+        const details = await apiService.getStudentDetails();
+        if (details?.user) {
+          setUserData(details.user);
+        } else if (res?.user) {
+          // Fallback to checkUser data if getStudentDetails fails/returns empty
+          setUserData(res.user);
+        }
+      } catch (e) {
+        console.error("Failed to fetch user details", e);
+        // Fallback to checkUser data on error
+        if (res?.user) {
+          setUserData(res.user);
+        }
+      }
+    } else if (res?.user) {
+      // For non-students (or if type check failed/defaulted but we have data), use checkUser data
+      setUserData(res.user);
+    }
+  };
 
   // Register as recruiter
   const registerRecruiter = async (recruiterData) => {
@@ -207,7 +139,7 @@ export function AuthProvider({ children }) {
       setUserData(response.user);
       // Force check user type after registration to ensure proper state
       setTimeout(() => {
-        checkUserType();
+        checkUserType(auth.currentUser);
       }, 500);
       return response;
     } catch (error) {
@@ -249,7 +181,7 @@ export function AuthProvider({ children }) {
           // Successfully signed in via redirect
           // Proactively check backend registration so SignUp/other pages can react
           try {
-            await checkUserType();
+            await checkUserType(result.user);
           } catch (err) {
             // checkUserType after redirect sign-in failed
           }
@@ -280,7 +212,7 @@ export function AuthProvider({ children }) {
             setLoading(true);
             postRegisterTimeout = setTimeout(async () => {
               try {
-                await checkUserType();
+                await checkUserType(user);
               } catch (err) {
                 // Deferred checkUserType failed
               } finally {
@@ -297,7 +229,7 @@ export function AuthProvider({ children }) {
         const currentPath = window.location.pathname;
         if (currentPath !== "/registration" && currentPath !== "/signup") {
           try {
-            await checkUserType();
+            await checkUserType(user);
           } catch {
             // Error checking user type
           }

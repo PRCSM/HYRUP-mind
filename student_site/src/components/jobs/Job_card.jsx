@@ -2,18 +2,16 @@ import React from 'react';
 import { BadgeCheck } from 'lucide-react';
 
 function Job_card({ job, onClick }) {
-    // Check if it's a hackathon or a job
     const isHackathon = job?.organizer !== undefined;
 
     const handleClick = () => {
-        // Trigger onClick for both jobs and hackathons
         if (onClick) {
             onClick(job);
         }
     };
 
     const {
-        title = "UI/UX Designer",
+        title,
         company,
         companyName,
         organizer,
@@ -31,29 +29,24 @@ function Job_card({ job, onClick }) {
         preferences = {}
     } = job || {};
 
-    // Extract company name from aboutCompany if company/companyName not available
     const extractCompanyName = () => {
         if (company) return company;
         if (companyName) return companyName;
         if (aboutCompany) {
-            // Extract company name from the first sentence (usually format: "CompanyName is...")
             const match = aboutCompany.match(/^([^.]+?)\s+(?:is|was|are)/);
             if (match) return match[1].trim();
         }
-        return "Lumel Technologies";
+        return "Company Name Not Available";
     };
 
-    // Format dates for hackathons
     const formatDate = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
-    // Check if it's an applied job (has applicationStatus)
     const isAppliedJob = job?.applicationStatus !== undefined;
 
-    // Get status color
     const getStatusColor = (status) => {
         const statusColors = {
             'Pending': 'bg-[#FEF3C7] text-[#92400E]',
@@ -65,20 +58,17 @@ function Job_card({ job, onClick }) {
         return statusColors[status] || 'bg-[#FEF3C7] text-[#92400E]';
     };
 
-    // Use appropriate values based on whether it's a hackathon or job
     const displayCompany = isAppliedJob ? job.applicationStatus : (isHackathon ? organizer : extractCompanyName());
-    const displayLocation = location || preferences?.location || "Coimbatore, Tamil Nadu, India";
-    const displayJobType = isHackathon ? formatDate(startDate) : jobType || "In House";
-    const displayEmploymentType = isHackathon ? formatDate(endDate) : employmentType || "FULL TIME";
-    const displayOpenings = isHackathon ? mode : (noOfOpenings ? `${noOfOpenings} opening${noOfOpenings !== 1 ? 's' : ''}` : openings || "200 openings");
+    const displayLocation = location || preferences?.location || "Location Not Specified";
+    const displayJobType = isHackathon ? formatDate(startDate) : jobType || "Job Type Not Specified";
+    const displayEmploymentType = isHackathon ? formatDate(endDate) : employmentType || "Employment Type Not Specified";
+    const displayOpenings = isHackathon ? mode : (noOfOpenings ? `${noOfOpenings} opening${noOfOpenings !== 1 ? 's' : ''}` : openings || "Openings Not Specified");
 
-    // Determine if badge should be shown
     const showBadge = !isAppliedJob;
 
-    // Determine pill color based on jobType
     const getPillColor = () => {
         if (isHackathon) {
-            return 'bg-[#FAB648] hover:bg-[#f5a825]'; // Default yellow for hackathons
+            return 'bg-[#FAB648] hover:bg-[#f5a825]';
         }
         const type = (jobType || '').toLowerCase();
         if (type.includes('campus')) {
@@ -90,7 +80,7 @@ function Job_card({ job, onClick }) {
     };
 
     return (
-        <div 
+        <div
             onClick={handleClick}
             className={`w-[280px] md:w-[350px] h-[230px] md:h-[270px] shrink-0 bg-white rounded-[10px] overflow-hidden border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer`}
         >
@@ -100,10 +90,10 @@ function Job_card({ job, onClick }) {
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute inset-0 bg-linear-to-br from-transparent to-black/20"></div>
                 </div>
-                
+
                 {/* Main Title Text - Dynamic based on job title */}
                 <div className="relative z-10 text-left">
-                    {title.split(' ').slice(0, 2).map((word, index) => (
+                    {(title || "Title Not Available").split(' ').slice(0, 2).map((word, index) => (
                         <h3 key={index} className="text-[24px] md:text-[40px] font-black text-[#B74329] leading-[1.05] tracking-tight uppercase" style={{ fontFamily: 'inter-extra' }}>
                             {word}
                         </h3>
@@ -113,7 +103,7 @@ function Job_card({ job, onClick }) {
                 {/* Bottom Right Button on Banner */}
                 <div className="absolute bottom-2 md:bottom-4 right-3 md:right-6">
                     <button className="w-[50px] md:w-[70px] h-[20px] md:h-[25px] bg-transparent border-[2px] md:border-[2.5px] border-[#B74329] rounded-full text-[#B74329] font-semibold text-xs md:text-sm hover:text-white transition-all duration-200 ease-out">
-                        
+
                     </button>
                 </div>
             </div>
@@ -124,7 +114,7 @@ function Job_card({ job, onClick }) {
                 <div className="flex-1 min-w-0">
                     {/* Job Title */}
                     <h4 className="text-[18px] md:text-[26px] font-bold text-gray-900 leading-tight mb-1 md:mb-2 truncate" style={{ fontFamily: 'jost-bold' }}>
-                        {title}
+                        {title || "Title Not Available"}
                     </h4>
 
                     {/* Company Name with Verified Badge OR Application Status */}
@@ -148,7 +138,7 @@ function Job_card({ job, onClick }) {
                         <span className="truncate">{displayLocation}</span>
                         <span className="text-gray-400 shrink-0">•</span>
                     </div>
-                    
+
                     <div className="text-[12px] md:text-[16px] text-[#00a8e8] font-semibold whitespace-nowrap" style={{ fontFamily: 'jost-semibold' }}>
                         {displayOpenings}
                     </div>

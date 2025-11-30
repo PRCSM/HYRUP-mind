@@ -1,12 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function ProfileHeader() {
+function ProfileHeader({ fullName, profilePicture, about, resume }) {
   const navigate = useNavigate();
 
   const handleEditProfile = () => {
     navigate("/profile-edit");
   };
+
+  const handleResumeClick = () => {
+    if (resume) {
+      window.open(resume, "_blank");
+    }
+  };
+
+  const displayImage = profilePicture || "/images/mix.png";
+  const displayName = fullName ? fullName.toUpperCase() : "USER NAME";
+  const nameParts = displayName.split(" ");
+  const firstName = nameParts[0];
+  const lastName = nameParts.slice(1).join(" ");
 
   return (
     <div className="flex flex-col gap-4">
@@ -17,14 +29,17 @@ function ProfileHeader() {
             {/* Profile Picture */}
             <div className="w-[140px] h-[140px] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] overflow-hidden bg-white flex-shrink-0">
               <img
-                src="/images/mix.png"
+                src={displayImage}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
             </div>
 
             {/* Resume Button - Mobile (top right) */}
-            <button className="bg-[#D4F4A7] px-4 py-2 rounded-[10px] border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)] flex items-center justify-center gap-1 hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.5)] transition-all cursor-pointer">
+            <button
+              onClick={handleResumeClick}
+              className="bg-[#D4F4A7] px-4 py-2 rounded-[10px] border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)] flex items-center justify-center gap-1 hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.5)] transition-all cursor-pointer"
+            >
               <span className="text-base font-[Jost-Bold] text-black">
                 Resume
               </span>
@@ -35,9 +50,9 @@ function ProfileHeader() {
           {/* Name and Edit Profile - Mobile */}
           <div className="mt-4 flex items-center relative justify-between">
             <h1 className="text-3xl font-[inter-extra] text-black uppercase tracking-wide leading-tight">
-              ALEX
+              {firstName}
               <br />
-              MAXWELLS
+              {lastName}
             </h1>
             <button
               onClick={handleEditProfile}
@@ -58,14 +73,17 @@ function ProfileHeader() {
           {/* Profile Picture */}
           <div className="w-[240px] h-[240px] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] overflow-hidden bg-white">
             <img
-              src="/images/mix.png"
+              src={displayImage}
               alt="Profile"
               className="w-full h-full object-cover"
             />
           </div>
 
           {/* Resume Button */}
-          <button className="w-full h-[50px] bg-[#D4F4A7] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] flex items-center justify-center gap-2 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.5)] transition-all cursor-pointer">
+          <button
+            onClick={handleResumeClick}
+            className="w-full h-[50px] bg-[#D4F4A7] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] flex items-center justify-center gap-2 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.5)] transition-all cursor-pointer"
+          >
             <span className="text-xl font-[Jost-Bold] text-black">Resume</span>
             <span className="text-xl">↗</span>
           </button>
@@ -76,9 +94,9 @@ function ProfileHeader() {
           {/* Name Section */}
           <div className="bg-[#FFFAE9] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] p-6 flex items-center justify-between">
             <h1 className="text-4xl font-[inter-extra] text-black uppercase tracking-wide leading-tight">
-              ALEX
+              {firstName}
               <br />
-              MAXWELLS
+              {lastName}
             </h1>
             <button
               onClick={handleEditProfile}
@@ -96,9 +114,7 @@ function ProfileHeader() {
               About :
             </h2>
             <p className="text-[15px] font-[jost-semibold] text-black leading-relaxed">
-              CodeSprint 2024 is a 48-hour global coding marathon that brings
-              together developers, designers, and innovators to build impactful
-              solutions using AI, .
+              {about || "No about info available."}
             </p>
           </div>
         </div>
@@ -108,9 +124,7 @@ function ProfileHeader() {
       <div className="md:hidden bg-[#FFFAE9] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] p-4">
         <h2 className="text-lg font-[Jost-Bold] text-black mb-2">About :</h2>
         <p className="text-sm font-[jost-semibold] text-black leading-relaxed">
-          CodeSprint 2024 is a 48-hour global coding marathon that brings
-          together developers, designers, and innovators to build impactful
-          solutions using AI, .
+          {about || "No about info available."}
         </p>
       </div>
     </div>

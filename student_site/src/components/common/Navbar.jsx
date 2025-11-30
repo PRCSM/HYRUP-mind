@@ -1,8 +1,9 @@
 import React from 'react';
 import { Home, Search, Briefcase, MessageSquare, Settings } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
-const NavItem = ({ icon: Icon, active = false, isProfile = false, onClick }) => {
+const NavItem = ({ icon: Icon, active = false, isProfile = false, onClick, profilePicture }) => {
     const baseClasses = "w-10 h-10 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer";
     const activeClasses = "bg-[#D9F99D] border-2 border-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]";
     const inactiveClasses = "bg-[#E5E7EB] border-2 border-transparent hover:bg-gray-300";
@@ -11,7 +12,7 @@ const NavItem = ({ icon: Icon, active = false, isProfile = false, onClick }) => 
     if (isProfile) {
         return (
             <div className={profileClasses} onClick={onClick}>
-                <img src="/images/mix.png" alt="User Profile" className="w-full h-full rounded-full object-cover" />
+                <img src={profilePicture} alt="User Profile" className="w-full h-full rounded-full object-cover" />
             </div>
         );
     }
@@ -32,6 +33,7 @@ const Logo = ({ onClick }) => (
 function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { userData } = useAuth();
 
     const handleNavigation = (path) => {
         navigate(path);
@@ -47,39 +49,40 @@ function Navbar() {
             <div className='hidden md:flex w-[5%] lg:w-[6%] ml-4 rounded-[10px] shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)] border-2 lg:border-4 border-[#363636] h-[95%] bg-[#FAF9F6] p-2 lg:p-4 flex-col items-center'>
                 <div className="flex flex-col items-center gap-4 lg:gap-6">
                     <Logo onClick={() => handleNavigation('/')} />
-                    <NavItem 
-                        isProfile={true} 
+                    <NavItem
+                        isProfile={true}
                         onClick={() => handleNavigation('/profile')}
+                        profilePicture={userData?.profile?.profilePicture}
                     />
                 </div>
 
                 <nav className="flex flex-col items-center gap-4 lg:gap-6 my-8 lg:my-12">
-                    <NavItem 
-                        icon={Home} 
-                        active={isActive('/')} 
+                    <NavItem
+                        icon={Home}
+                        active={isActive('/')}
                         onClick={() => handleNavigation('/')}
                     />
-                    <NavItem 
-                        icon={Search} 
-                        active={isActive('/explore')} 
+                    <NavItem
+                        icon={Search}
+                        active={isActive('/explore')}
                         onClick={() => handleNavigation('/explore')}
                     />
-                    <NavItem 
-                        icon={Briefcase} 
-                        active={isActive('/jobs')} 
+                    <NavItem
+                        icon={Briefcase}
+                        active={isActive('/jobs')}
                         onClick={() => handleNavigation('/jobs')}
                     />
-                    <NavItem 
-                        icon={MessageSquare} 
-                        active={isActive('/chat')} 
+                    <NavItem
+                        icon={MessageSquare}
+                        active={isActive('/chat')}
                         onClick={() => handleNavigation('/chat')}
                     />
                 </nav>
 
                 <div className="mt-auto">
-                    <NavItem 
-                        icon={Settings} 
-                        active={isActive('/settings')} 
+                    <NavItem
+                        icon={Settings}
+                        active={isActive('/settings')}
                         onClick={() => handleNavigation('/settings')}
                     />
                 </div>
@@ -87,28 +90,29 @@ function Navbar() {
 
             {/* Mobile Navbar */}
             <div className='md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[80%] rounded-[15px] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] border-4 border-[#363636] bg-[#FAF9F6] p-2 flex items-center justify-between z-40'>
-                <NavItem 
-                    isProfile={true} 
+                <NavItem
+                    isProfile={true}
                     onClick={() => handleNavigation('/profile')}
+                    profilePicture={userData?.profile?.profilePicture}
                 />
-                <NavItem 
-                    icon={Home} 
-                    active={isActive('/')} 
+                <NavItem
+                    icon={Home}
+                    active={isActive('/')}
                     onClick={() => handleNavigation('/')}
                 />
-                <NavItem 
-                    icon={Search} 
-                    active={isActive('/explore')} 
+                <NavItem
+                    icon={Search}
+                    active={isActive('/explore')}
                     onClick={() => handleNavigation('/explore')}
                 />
-                <NavItem 
-                    icon={Briefcase} 
-                    active={isActive('/jobs')} 
+                <NavItem
+                    icon={Briefcase}
+                    active={isActive('/jobs')}
                     onClick={() => handleNavigation('/jobs')}
                 />
-                <NavItem 
-                    icon={MessageSquare} 
-                    active={isActive('/chat')} 
+                <NavItem
+                    icon={MessageSquare}
+                    active={isActive('/chat')}
                     onClick={() => handleNavigation('/chat')}
                 />
             </div>

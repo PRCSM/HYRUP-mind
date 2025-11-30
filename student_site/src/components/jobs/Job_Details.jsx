@@ -5,18 +5,18 @@ import HeartAnimation from '../common/HeartAnimation';
 import jobStore from '../../utils/jobStore';
 
 const toList = (value) => {
-	if (!value) return [];
-	if (Array.isArray(value)) {
-		return value
-			.filter(Boolean)
-			.map((item) => (typeof item === 'string' ? item.trim() : item))
-			.filter(Boolean);
-	}
-	return value
-		.split(/\r?\n|•|\u2022/)
-		.flatMap((segment) => segment.split(/\.(?!\d)/))
-		.map((item) => item.replace(/^[•\-\s]+/, '').trim())
-		.filter(Boolean);
+    if (!value) return [];
+    if (Array.isArray(value)) {
+        return value
+            .filter(Boolean)
+            .map((item) => (typeof item === 'string' ? item.trim() : item))
+            .filter(Boolean);
+    }
+    return value
+        .split(/\r?\n|•|\u2022/)
+        .flatMap((segment) => segment.split(/\.(?!\d)/))
+        .map((item) => item.replace(/^[•\-\s]+/, '').trim())
+        .filter(Boolean);
 };
 
 function Job_Details({ job, isOpen, onClose }) {
@@ -24,63 +24,62 @@ function Job_Details({ job, isOpen, onClose }) {
     const [showApplyAnimation, setShowApplyAnimation] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
     const [isApplied, setIsApplied] = useState(false);
-    
+
     // Check if job is already saved - MUST be before any conditional returns
     React.useEffect(() => {
         if (job) {
             const jobId = job.id || job.title;
             setIsSaved(jobStore.isJobSaved(jobId, job.title));
             setIsApplied(jobStore.isJobApplied(jobId, job.title));
-            
+
             // Subscribe to changes
             const unsubscribe = jobStore.subscribe(() => {
                 setIsSaved(jobStore.isJobSaved(jobId, job.title));
                 setIsApplied(jobStore.isJobApplied(jobId, job.title));
             });
-            
+
             return () => unsubscribe();
         }
     }, [job]);
-    
+
     if (!job) return null;
 
     const handleSaveJob = () => {
         const newSavedState = jobStore.saveJob(job);
         setIsSaved(newSavedState);
-        
+
         if (newSavedState) {
             setShowHeartAnimation(true);
         }
-        
+
         window.dispatchEvent(new Event('jobsUpdated'));
     };
 
     const handleApplyJob = () => {
         // Check if it's an In House job
-        const normalizedType = typeof jobType === 'string' 
-            ? jobType.toLowerCase().replace(/\s+/g, '-') 
+        const normalizedType = typeof jobType === 'string'
+            ? jobType.toLowerCase().replace(/\s+/g, '-')
             : '';
-        
+
         if (normalizedType !== 'company') {
             return; // Only allow applying to In House jobs
         }
-        
+
         const result = jobStore.applyToJob(job);
-        
+
         if (result.success) {
             setShowApplyAnimation(true);
             setIsApplied(true);
-            
+
             window.dispatchEvent(new Event('jobsUpdated'));
             window.dispatchEvent(new Event('jobApplied'));
-            
+
             setTimeout(() => {
                 onClose();
             }, 1500);
         }
     };
 
-    // Extract company name from aboutCompany field
     const extractCompanyName = () => {
         if (job.company) return job.company;
         if (job.companyName) return job.companyName;
@@ -88,20 +87,20 @@ function Job_Details({ job, isOpen, onClose }) {
             const match = job.aboutCompany.match(/^([^.]+?)\s+(?:is|was|are)/);
             if (match) return match[1].trim();
         }
-        return "Company";
+        return "Company Name Not Available";
     };
 
     const {
-        title = "UI/UX Designer",
+        title,
         description,
         rolesAndResponsibilities,
         perks,
         aboutJob,
         aboutCompany,
-        jobType = "In House",
-        employmentType = "Full time",
-        noOfOpenings = 0,
-        mode = "Online",
+        jobType,
+        employmentType,
+        noOfOpenings,
+        mode,
         recruiter,
         salaryRange = {},
         preferences = {}
@@ -110,8 +109,8 @@ function Job_Details({ job, isOpen, onClose }) {
     const company = extractCompanyName();
     const location = preferences?.location || "Location not specified";
     const openings = noOfOpenings;
-    const stipend = salaryRange.min && salaryRange.max 
-        ? `$${(salaryRange.min/1000).toFixed(0)}k - $${(salaryRange.max/1000).toFixed(0)}k`
+    const stipend = salaryRange.min && salaryRange.max
+        ? `$${(salaryRange.min / 1000).toFixed(0)}k - $${(salaryRange.max / 1000).toFixed(0)}k`
         : "Competitive";
     const duration = employmentType === "full-time" ? "Permanent" : "Contract";
     const postedTime = "Recently posted";
@@ -148,11 +147,11 @@ function Job_Details({ job, isOpen, onClose }) {
         <AnimatePresence>
             {isOpen && (
                 <>
-                    <HeartAnimation 
-                        show={showHeartAnimation} 
+                    <HeartAnimation
+                        show={showHeartAnimation}
                         onComplete={() => setShowHeartAnimation(false)}
                     />
-                    
+
                     {/* Apply Success Animation */}
                     <AnimatePresence>
                         {showApplyAnimation && (
@@ -169,11 +168,11 @@ function Job_Details({ job, isOpen, onClose }) {
                                 {/* Success Checkmark */}
                                 <motion.div
                                     initial={{ scale: 0, rotate: -180 }}
-                                    animate={{ 
+                                    animate={{
                                         scale: [0, 1.2, 1],
                                         rotate: 0
                                     }}
-                                    transition={{ 
+                                    transition={{
                                         duration: 0.6,
                                         ease: [0.34, 1.56, 0.64, 1]
                                     }}
@@ -192,7 +191,7 @@ function Job_Details({ job, isOpen, onClose }) {
                                             />
                                         </svg>
                                     </div>
-                                    
+
                                     {/* Success Text */}
                                     <motion.div
                                         initial={{ opacity: 0, y: 20 }}
@@ -217,23 +216,23 @@ function Job_Details({ job, isOpen, onClose }) {
                                         <motion.div
                                             key={`confetti-${i}`}
                                             className="absolute w-3 h-3 rounded-full"
-                                            style={{ 
+                                            style={{
                                                 backgroundColor: ['#E3FEAA', '#B8D1E6', '#E6D3FC', '#FAB648'][i % 4]
                                             }}
-                                            initial={{ 
-                                                x: 0, 
-                                                y: 0, 
+                                            initial={{
+                                                x: 0,
+                                                y: 0,
                                                 scale: 0,
-                                                opacity: 0 
+                                                opacity: 0
                                             }}
-                                            animate={{ 
+                                            animate={{
                                                 x: x,
                                                 y: y,
                                                 scale: [0, 1.5, 0],
                                                 opacity: [0, 1, 0],
                                                 rotate: [0, 360]
                                             }}
-                                            transition={{ 
+                                            transition={{
                                                 duration: 1,
                                                 delay: 0.3 + i * 0.05,
                                                 ease: 'easeOut'
@@ -244,7 +243,7 @@ function Job_Details({ job, isOpen, onClose }) {
                             </motion.div>
                         )}
                     </AnimatePresence>
-                    
+
                     {/* Overlay */}
                     <motion.div
                         key="overlay"
@@ -335,11 +334,10 @@ function Job_Details({ job, isOpen, onClose }) {
                                             <button
                                                 onClick={handleApplyJob}
                                                 disabled={isApplied}
-                                                className={`flex items-center justify-center rounded-[10px] border-[3px] px-6 md:px-8 py-3 text-base font-extrabold shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-all ${
-                                                    isApplied 
-                                                        ? 'bg-gray-300 border-gray-500 text-gray-600 cursor-not-allowed' 
-                                                        : 'border-[#1f1f1f] bg-[#E3FEAA] text-[#1f1f1f] hover:shadow-[8px_8px_0px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer'
-                                                }`}
+                                                className={`flex items-center justify-center rounded-[10px] border-[3px] px-6 md:px-8 py-3 text-base font-extrabold shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-all ${isApplied
+                                                    ? 'bg-gray-300 border-gray-500 text-gray-600 cursor-not-allowed'
+                                                    : 'border-[#1f1f1f] bg-[#E3FEAA] text-[#1f1f1f] hover:shadow-[8px_8px_0px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 active:translate-y-0.5 cursor-pointer'
+                                                    }`}
                                                 style={{ fontFamily: 'jost-bold' }}
                                             >
                                                 {isApplied ? 'Already Applied' : 'Apply Now'}
@@ -350,8 +348,8 @@ function Job_Details({ job, isOpen, onClose }) {
                                                     className="flex items-center justify-center rounded-[10px] border-[3px] border-[#1f1f1f] bg-[#F8BBD0] p-3.5 shadow-[6px_6px_0px_rgba(0,0,0,0.35)] transition-all duration-200 active:translate-y-0.5 hover:shadow-[8px_8px_0px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 cursor-pointer"
                                                     aria-label={isSaved ? "Remove from saved jobs" : "Save job"}
                                                 >
-                                                    <Heart 
-                                                        className="h-6 w-6 transition-all duration-200" 
+                                                    <Heart
+                                                        className="h-6 w-6 transition-all duration-200"
                                                         strokeWidth={2.5}
                                                         fill={isSaved ? '#E91E63' : 'none'}
                                                         color={isSaved ? '#E91E63' : '#1f1f1f'}
@@ -414,7 +412,7 @@ function Job_Details({ job, isOpen, onClose }) {
                                                         </p>
                                                     </div>
                                                 </div>
-                                                
+
                                                 {/* Skills inside About the job container */}
                                                 {skills.length > 0 && (
                                                     <div className="mt-5 pt-4 border-t-[3px] border-[#1f1f1f]">
