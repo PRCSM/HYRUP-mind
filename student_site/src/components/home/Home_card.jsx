@@ -13,8 +13,11 @@ import SkillTag from './SkillTag';
 import PerkPill from './PerkPill';
 import HeartAnimation from '../common/HeartAnimation';
 import jobStore from '../../utils/jobStore';
+import { useChat } from "../../contexts/ChatContext";
+import { useNavigate } from "react-router-dom";
 
 const SECTIONS = 4;
+
 
 export default function Home_card({ jobData, onReject, onApply, cardColor }) {
   const [activeSection, setActiveSection] = useState(0);
@@ -23,6 +26,9 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
   const [isSaved, setIsSaved] = useState(false);
   const cardRef = useRef(null);
   const containerRef = useRef(null);
+    const { addChat } = useChat();
+const navigate = useNavigate();
+    // console.log("JOB DATA:", jobData);
 
   // Check if job is already saved
   React.useEffect(() => {
@@ -446,7 +452,33 @@ export default function Home_card({ jobData, onReject, onApply, cardColor }) {
                             onMouseEnter={() => setCursorState(prev => ({ ...prev, visible: false }))}
                             // Re-trigger mouse move logic when leaving button to show cursor again immediately
                             onMouseLeave={(e) => handleMouseMove(e)}
-                            onClick={(e) => e.stopPropagation()}
+                            // onClick={(e) => e.stopPropagation()}
+                            onClick={async (e) => {
+    e.stopPropagation();
+
+    if (!jobData?.recruiterFirebaseId && !jobData?.firebaseRecruiterId && !jobData?.recruiterId) {
+        console.error("❌ Missing recruiter Firebase UID in jobData");
+        return;
+    }
+
+    // Pick whatever field exists (fallback support)
+    const recruiterUID =
+        jobData.recruiterFirebaseId ||
+        jobData.firebaseRecruiterId ||
+        jobData.recruiterId;
+
+    const chatUser = {
+        id: recruiterUID, // Firebase UID ONLY
+        firebaseId: recruiterUID,
+        name: jobData.company || "Recruiter",
+        img: jobData.companyLogo || "/api/placeholder/100/100",
+    };
+
+    const chatId = await addChat(chatUser);
+
+    if (chatId) navigate("/chat");
+}}
+
                             className="bg-white border-2 lg:border-4 border-gray-900 rounded-xl lg:rounded-2xl px-4 py-2 lg:px-8 lg:py-3 font-extrabold text-sm lg:text-lg flex items-center gap-2 lg:gap-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] lg:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 cursor-pointer"
                         >
                             <MessageSquare className="w-4 h-4 lg:w-6 lg:h-6" strokeWidth={2.5} />

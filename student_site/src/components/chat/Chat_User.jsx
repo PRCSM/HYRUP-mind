@@ -1,30 +1,38 @@
 import React, { useState } from "react";
+import { useChat } from "../../contexts/ChatContext";
+import { getAuth } from "firebase/auth";
 
-function Chat_User({ selectedChatId, setSelectedChatId }) {
+
+function Chat_User() {
+  const auth = getAuth();
+const currentUser = auth.currentUser;
+
   // Demo chat data
-  const [chats] = useState([
-    {
-      id: 1,
-      name: "Amazon",
-      lastMessage: "Hey, What's up",
-      img: "https://logo.clearbit.com/amazon.com",
-    },
-    {
-      id: 2,
-      name: "Google",
-      lastMessage: "Today, Meeting is Over 👍",
-      img: "https://logo.clearbit.com/google.com",
-      unreadCount: 15,
-    },
-    {
-      id: 3,
-      name: "Tesla",
-      lastMessage: "where are you buddy's 😎",
-      img: "https://logo.clearbit.com/tesla.com",
-    },
-  ]);
+  // const [chats] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Amazon",
+  //     lastMessage: "Hey, What's up",
+  //     img: "https://logo.clearbit.com/amazon.com",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Google",
+  //     lastMessage: "Today, Meeting is Over 👍",
+  //     img: "https://logo.clearbit.com/google.com",
+  //     unreadCount: 15,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Tesla",
+  //     lastMessage: "where are you buddy's 😎",
+  //     img: "https://logo.clearbit.com/tesla.com",
+  //   },
+  // ]);
   const [loading] = useState(false);
-  const currentUser = true; // Set to true for demo
+  // const currentUser = true; // Set to true for demo
+const { chats, selectChat, deleteChat, selectedChatId } = useChat();
+
 
   const handleDeleteChat = async (e, chatId, chatName) => {
     e.stopPropagation();
@@ -71,7 +79,7 @@ function Chat_User({ selectedChatId, setSelectedChatId }) {
         {chats.map((c) => (
           <div
             key={c.id}
-            onClick={() => setSelectedChatId(c.id)}
+            onClick={() => selectChat(c.id)}
             className={`relative w-[95%] h-[80px] rounded-[10px] border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.7)] flex justify-start items-center gap-4 p-4 cursor-pointer transition-all duration-200 ${
               selectedChatId === c.id ? "bg-[#E8F5E9]" : "bg-[#FFFFF3] hover:bg-[#FFEDD5]"
             }`}

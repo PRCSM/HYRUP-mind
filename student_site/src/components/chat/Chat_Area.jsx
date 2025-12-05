@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useChat } from "../../contexts/ChatContext";
+import { getAuth } from "firebase/auth";
+
+
 
 function Chat_Area({ selectedChat, setSelectedChatId }) {
   const [messageInput, setMessageInput] = useState("");
@@ -11,39 +15,41 @@ function Chat_Area({ selectedChat, setSelectedChatId }) {
   const listRef = useRef(null);
   const emojiPickerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
+  const auth = getAuth();
+const currentUser = auth.currentUser;
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Manage the qualifications or preference used to hide jobs from your search",
-      sender: "company",
-      timestamp: new Date(),
-    },
-    {
-      id: 2,
-      text: "Manage the qualifications or preference used to hide jobs from your search",
-      sender: "user",
-      timestamp: new Date(),
-    },
-    {
-      id: 3,
-      text: "Manage the qualifications or preference used to hide jobs from your search",
-      sender: "company",
-      timestamp: new Date(),
-    },
-    {
-      id: 4,
-      text: "Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search",
-      sender: "user",
-      timestamp: new Date(),
-    },
-  ]);
+  // const [messages, setMessages] = useState([
+  //   {
+  //     id: 1,
+  //     text: "Manage the qualifications or preference used to hide jobs from your search",
+  //     sender: "company",
+  //     timestamp: new Date(),
+  //   },
+  //   {
+  //     id: 2,
+  //     text: "Manage the qualifications or preference used to hide jobs from your search",
+  //     sender: "user",
+  //     timestamp: new Date(),
+  //   },
+  //   {
+  //     id: 3,
+  //     text: "Manage the qualifications or preference used to hide jobs from your search",
+  //     sender: "company",
+  //     timestamp: new Date(),
+  //   },
+  //   {
+  //     id: 4,
+  //     text: "Manage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your searchManage the qualifications or preference used to hide jobs from your search",
+  //     sender: "user",
+  //     timestamp: new Date(),
+  //   },
+  // ]);
+const { messages, sendMessage } = useChat();
 
   useEffect(() => {
     if (listRef.current)
@@ -155,31 +161,45 @@ function Chat_Area({ selectedChat, setSelectedChatId }) {
     setAttachment(null);
     setShowPreview(false);
   };
-
+  const receiverId = selectedChat?.id;
   const handleSendMessage = () => {
-    const text = messageInput.trim();
-    if (!selectedChat) return;
-    if (!text && !attachment) return;
+  if (!selectedChat) return;
+  const text = messageInput.trim();
+  if (!text && !attachment) return;
 
-    let messageText = text;
-    if (attachment) {
-      messageText = text + (text ? " " : "") + makeFileTag(attachment);
-    }
+  // sendMessage(receiverId, text, attachment || null);
+    sendMessage(selectedChat.id, text, attachment || null);
 
-    setMessages([
-      ...messages,
-      {
-        id: messages.length + 1,
-        text: messageText,
-        sender: "user",
-        timestamp: new Date(),
-      },
-    ]);
+  setMessageInput("");
+  clearAttachment();
+  setShowPreview(false);
+};
 
-    setMessageInput("");
-    clearAttachment();
-    setShowPreview(false);
-  };
+  // const handleSendMessage = () => {
+  //   const text = messageInput.trim();
+  //   if (!selectedChat) return;
+  //   if (!text && !attachment) return;
+
+  //   let messageText = text;
+  //   if (attachment) {
+  //     messageText = text + (text ? " " : "") + makeFileTag(attachment);
+  //   }
+
+  //   setMessages([
+  //     ...messages,
+  //     {
+  //       id: messages.length + 1,
+  //       text: messageText,
+  //       sender: "user",
+  //       timestamp: new Date(),
+  //     },
+  //   ]);
+
+  //   setMessageInput("");
+  //   clearAttachment();
+  //   setShowPreview(false);
+  // };
+ 
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -281,7 +301,7 @@ function Chat_Area({ selectedChat, setSelectedChatId }) {
       {/* Backdrop blur for mobile */}
       <div
         className="md:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 animate-[fadeIn_0.3s_ease-out]"
-        onClick={() => setSelectedChatId(null)}
+        onClick={() => selectChat(null)}
       />
 
       {/* Chat Area */}
@@ -304,7 +324,7 @@ function Chat_Area({ selectedChat, setSelectedChatId }) {
           {/* Back button - mobile only */}
           <button
             type="button"
-            onClick={() => setSelectedChatId(null)}
+            onClick={() => selectChat(null)}
             className="md:hidden grid h-10 w-10 place-items-center rounded-full border-2 border-black bg-white hover:bg-gray-100 transition-colors"
             aria-label="Back to chat list"
             title="Back"
@@ -345,7 +365,7 @@ function Chat_Area({ selectedChat, setSelectedChatId }) {
           )}
 
           {/* Messages */}
-          {messages.map((msg) => {
+          {/* {messages.map((msg) => {
             const { cleanText, file } = parseFileTag(msg.text);
             return (
               <div
@@ -383,7 +403,51 @@ function Chat_Area({ selectedChat, setSelectedChatId }) {
                 )}
               </div>
             );
-          })}
+          })} */}
+          {messages.map((msg, index) => {
+  const isMe = msg.senderId === currentUser?.uid;
+  const { cleanText, file } = parseFileTag(msg.message || "");
+
+  return (
+    <div
+      key={index}
+      className={`flex gap-3 ${isMe ? "justify-end" : "justify-start"}`}
+    >
+      {/* Avatar (only if message is NOT from logged-in user) */}
+      {!isMe && (
+        <div className="w-10 h-10 rounded-full bg-cyan-300 border-2 border-black shrink-0 flex items-center justify-center">
+          <span className="text-xl">🤖</span>
+        </div>
+      )}
+
+      <div className="flex max-w-[70%] flex-col items-start gap-2">
+        {/* Text Message */}
+        {cleanText && (
+          <div
+            className={`whitespace-pre-wrap break-words border-2 border-black p-3 text-sm font-[Jost-Regular] leading-relaxed text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.7)] ${
+              isMe
+                ? "rounded-[10px] rounded-br-md bg-purple-200"
+                : "rounded-[10px] rounded-bl-md bg-white"
+            }`}
+          >
+            {cleanText}
+          </div>
+        )}
+
+        {/* File / Image */}
+        {file && <AttachmentCard file={file} />}
+      </div>
+
+      {/* Avatar (ONLY for sender bubble) */}
+      {isMe && (
+        <div className="w-10 h-10 rounded-full bg-orange-300 border-2 border-black shrink-0 flex items-center justify-center">
+  <img src={currentUser.photoURL  || "https://ui-avatars.com/api/?name=You" } className="h-full w-full object-cover rounded-full" />
+         </div>
+      )}
+    </div>
+  );
+})}
+
         </div>
 
         {/* Composer */}

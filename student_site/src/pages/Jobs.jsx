@@ -66,23 +66,58 @@ function Jobs() {
                 const rawJobs = getArray(jobResponse);
                 const rawHackathons = getArray(hackathonResponse);
 
+    //             const normalizedJobs = rawJobs.map((job, i) => {
+    //                 const companyName = job.recruiter?.company?.name || job.college || job.company || job.companyName;
+    //                 const companyDescription = job.recruiter?.company?.description || job.aboutCompany;
+    //                 const companyLogo = job.recruiter?.company?.logo;
+    //                 //  Extract Firebase UID used by recruiter for chat
+    //     const recruiterFirebaseId =
+    //  job.recruiter?.firebaseUid ||
+    //  job.recruiter?.firebaseId ||
+    //  job.firebaseId ||
+    //  job.recruiterFirebaseId ||
+    //  null;
+    //                 return {
+    //                     ...job,
+    //                     id: job.id ?? job._id ?? `job-${i}`,
+    //                     company: companyName,
+    //                     companyName: companyName,
+    //                     aboutCompany: companyDescription,
+    //                     companyLogo: companyLogo,
+    //                     aboutJob: job.details || job.description,
+    //                     location: job.preferences?.location || job.location,
+    //                     skills: job.preferences?.skills || [],
+    //                     recruiterFirebaseId 
+    //                 };
+    //             });
                 const normalizedJobs = rawJobs.map((job, i) => {
-                    const companyName = job.recruiter?.company?.name || job.college || job.company || job.companyName;
-                    const companyDescription = job.recruiter?.company?.description || job.aboutCompany;
-                    const companyLogo = job.recruiter?.company?.logo;
+    const companyName = job.recruiter?.company?.name || job.college || job.company || job.companyName;
+    const companyDescription = job.recruiter?.company?.description || job.aboutCompany;
+    const companyLogo = job.recruiter?.company?.logo;
 
-                    return {
-                        ...job,
-                        id: job.id ?? job._id ?? `job-${i}`,
-                        company: companyName,
-                        companyName: companyName,
-                        aboutCompany: companyDescription,
-                        companyLogo: companyLogo,
-                        aboutJob: job.details || job.description,
-                        location: job.preferences?.location || job.location,
-                        skills: job.preferences?.skills || [],
-                    };
-                });
+    // Ensure Firebase UID exists (used for chat functionality)
+    const recruiterFirebaseId =
+        job.recruiter?.firebaseUid ||
+        job.recruiter?.firebaseId ||
+        job.firebaseRecruiterId ||
+        job.recruiterId ||
+        job.recruiter?.id ||
+        job.recruiter?._id || //mongodb id
+        null;
+
+    return {
+        ...job,
+        id: job.id ?? job._id ?? `job-${i}`,
+        company: companyName,
+        companyName: companyName,
+        aboutCompany: companyDescription,
+        companyLogo: companyLogo,
+        aboutJob: job.details || job.description,
+        location: job.preferences?.location || job.location,
+        skills: job.preferences?.skills || [],
+        recruiterFirebaseId, // always present for chat
+    };
+});
 
                 setJobs(normalizedJobs);
                 setHackathons(rawHackathons);
